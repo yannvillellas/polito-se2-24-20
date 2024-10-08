@@ -1,30 +1,27 @@
-import ticket from '../models/Ticket.mjs';
-const SERVER_URL = 'http://localhost:3001/api/ticket/'
+const SERVER_URL = 'http://localhost:3001/api/time/'
 
-const createTicket = async (number, esimatedTime, serviceId, timeId) =>{
-    const ticketNumber = await fetch(SERVER_URL, {
+const insertTime = async()=>{
+    const timeId = await fetch(SERVER_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({number, esimatedTime, serviceId, timeId})
+        }
     })
     .then(handleInvalidResponse)
     .then(response => response.json())
     
-    return ticketNumber;
+    return timeId;
 }
 
-const getLastNumber = async () =>{
-    const lastNumber = await fetch(SERVER_URL + 'last-number', {
-        method: 'GET'
+const getTodayTimeId = async()=>{
+    const timeId = await fetch(SERVER_URL+'today', {
+        method: 'GET',
     })
     .then(handleInvalidResponse)
     .then(response => response.json())
-
-    return lastNumber;
+    
+    return timeId;
 }
-
 
 function handleInvalidResponse(response) {
     if (!response.ok) { throw Error(response.statusText) }
@@ -35,9 +32,9 @@ function handleInvalidResponse(response) {
     return response;
 }
 
-const TicketAPI = {
-    createTicket,
-    getLastNumber
+const TimeAPI = {
+    insertTime,
+    getTodayTimeId
 }
 
-export default TicketAPI;
+export default TimeAPI;

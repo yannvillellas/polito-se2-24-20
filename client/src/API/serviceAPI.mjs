@@ -19,3 +19,9 @@ function handleInvalidResponse(response) {
     }
     return response;
 }
+
+const ServerAPI = {
+    getServices
+}
+
+export default ServerAPI;
