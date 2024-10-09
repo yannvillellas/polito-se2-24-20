@@ -6,6 +6,8 @@ import TimeAPI from "../../API/TimeAPI.mjs";
 import CounterServicesAPI from "../../API/CounterSarvicesAPI.mjs";
 import './getTicket.css'
 
+import { useNavigate } from 'react-router-dom';
+
 const GetTicket = () =>{
     const [services, setServices] = useState([]);
     const [number, setNumber] = useState(null);
@@ -13,6 +15,9 @@ const GetTicket = () =>{
     const [lastNumber, setLastNumber] = useState(null);
     const [timeId, setTimeId] = useState(null);
     const [waitingTime, setWaitingTime]=useState(null);
+
+    const navigate = useNavigate();
+
     
     useEffect(()=>{
         const fetchServices = async ()=>{
@@ -91,13 +96,21 @@ const GetTicket = () =>{
                     <p>{number}</p>
                     <p>WAITING TIME</p>
                     <p>{waitingTime} min</p>
+                    
+                    <Button 
+                        variant="success" 
+                        onClick={() => navigate('/customer/queue')}
+                    > 
+                        Go to the queue 
+                    </Button>
+
                 </>
             ) : (
                 <div>
                     <Button 
                         variant="danger" 
                         className="mb-2" 
-                        onClick={() => { handleClickNumber() }}
+                        onClick={() => { handleClickNumber()}}
                     >
                         Get Your Number
                     </Button>
