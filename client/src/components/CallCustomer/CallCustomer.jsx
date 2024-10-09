@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import ServiceAPI from "../../API/serviceAPI.mjs";
+
+import { useState, useEffect } from 'react';
 import { Container, Card, Row, Col, Table, Spinner} from 'react-bootstrap';
 
 
@@ -32,13 +34,14 @@ function CallCustomer() {
     {id: 7, name: 'International shipping of parcel', userInQueue: 10, serviceTime: 10},
   ]);
 
-  /* Versione che prende dal db:
-  const [services, setServices] = useState([]);
-  useEffect(() => {
-    const services = await API.getServices();
-    setServices(services);
-  }, []);
-  */
+  useEffect(()=>{
+    const fetchServices = async ()=>{
+        const listServices = await ServiceAPI.getServices()
+        setServices(listServices);
+    }
+
+    fetchServices()
+  }, [])
 
     return (
 
@@ -118,7 +121,7 @@ function ServiceRow(props){
                 {props.service.name}
             </td>
             <td>
-                {props.service.userInQueue}
+                {props.service.numberInQueue}
             </td>
         </tr>
     )
