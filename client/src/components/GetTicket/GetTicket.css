@@ -1,0 +1,71 @@
+/* Imposta un font di base e un colore di sfondo per il corpo */
+body {
+    font-family: 'Arial', sans-serif; /* Font di base */
+    background-color: #f4f4f9; /* Colore di sfondo */
+    color: #333; /* Colore del testo */
+    margin: 0; /* Rimuove margini */
+    padding: 20px; /* Aggiunge padding */
+}
+
+/* Contenitore principale per il componente */
+.service-buttons {
+    display: flex;
+    flex-direction: column; /* Disposizione verticale */
+    align-items: center; /* Allinea al centro */
+    margin-bottom: 20px; /* Spazio inferiore */
+}
+
+/* Stile per i pulsanti */
+button {
+    width: 200px; /* Larghezza fissa per i pulsanti */
+    padding: 15px; /* Padding interno */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Bordo arrotondato */
+    font-size: 16px; /* Dimensione del font */
+    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+}
+
+/* Pulsanti per i servizi */
+button.info {
+    background-color: #007bff; /* Colore di sfondo per il pulsante info */
+    color: #fff; /* Colore del testo */
+}
+
+button.info:hover {
+    background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
+}
+
+/* Pulsante per ottenere il numero */
+button.danger {
+    background-color: #dc3545; /* Colore di sfondo per il pulsante per ottenere numero */
+    color: #fff; /* Colore del testo */
+}
+
+button.danger:hover {
+    background-color: #c82333; /* Colore di sfondo al passaggio del mouse */
+}
+
+/* Stile per il messaggio del numero */
+p {
+    font-size: 24px; /* Dimensione del font per il numero */
+    font-weight: bold; /* Grassetto */
+    text-align: center; /* Allinea al centro */
+    margin-top: 20px; /* Spazio superiore */
+    color: #007bff; /* Colore blu */
+}
+
+/* Aggiungi uno spazio di separazione */
+hr {
+    margin: 30px 0; /* Margini per separatori orizzontali */
+}
+
+/* Stile per la sezione di avviso */
+.alert {
+    background-color: #f8d7da; /* Colore di sfondo per gli avvisi */
+    color: #721c24; /* Colore del testo per gli avvisi */
+    padding: 10px; /* Padding interno */
+    border: 1px solid #f5c6cb; /* Bordo per gli avvisi */
+    border-radius: 5px; /* Bordo arrotondato */
+    margin: 20px 0; /* Spazio superiore e inferiore */
+    text-align: center; /* Allinea al centro */
+}
