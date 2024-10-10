@@ -3,12 +3,25 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Row, Button } from "react-bootstrap";
 import CustomerTable from "./CustomerTable"
+import CounterTable from "./CountersTable";
 
 function Statistics(props){
 
-    let [wStats, setWStats]= useState([]);
-    let [mStats, setMStats] = useState([]);
+    let [stats, setStats]= useState([]);
+    let [statType, setStatType]= useState('');
+    let [searched, setSearched]=useState(false);
 
+    const search = async (parameters)=>{
+        let statistics;
+        if (parameters.type=='daily') {
+            setStatType('daily');
+            statistics = await API.getDailyStats();
+        }else{
+            setStatType('weekly');
+            statistics=await API.getWeeklyStats();
+        }
+        setStats(statistics);
+    }
 
     /*useEffect(()=>{
         const getWeeklyStats= async ()=>{
@@ -27,8 +40,9 @@ function Statistics(props){
     return(
         <>
             <Row as='h2'>Choose statistics you want to see</Row>
-            <FormStats></FormStats>
-            <CustomerTable></CustomerTable>
+            <FormStats setSearched={setSearched} search={search}></FormStats>
+            {searched && <CustomerTable stats={stats} statType={statType}></CustomerTable>}
+            {searched && <CounterTable stats={stats} statType={statType}></CounterTable>}
         </>
     )
 }
@@ -42,8 +56,9 @@ function FormStats(props){
 
     const handleSubmit=async (event)=>{
         event.preventDefault();
-        const credentials = { username, password };
-        //props.login(credentials);
+        props.setSearched(true);
+        const parameters = { startDate, endDate, type };
+        props.search(parameters);
        
     }
 
@@ -64,7 +79,7 @@ function FormStats(props){
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                    <Dropdown.Item onClick={()=>{setType('monthly')}}>Monthly</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>{setType('daily')}}>Daily</Dropdown.Item>
                     <Dropdown.Item onClick={()=>{setType('weekly')}}>Weekly</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
