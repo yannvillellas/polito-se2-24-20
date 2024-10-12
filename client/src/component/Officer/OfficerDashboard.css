@@ -1,0 +1,22 @@
+.officer-dashboard {
+    text-align: center;
+    margin: 20px;
+}
+
+.info {
+    margin-bottom: 20px;
+}
+
+.next-customer {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.served-customers {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.queue-table {
+    margin-top: 20px;
+}
