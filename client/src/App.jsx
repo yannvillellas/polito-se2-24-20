@@ -15,16 +15,12 @@ function App() {
   useEffect(()=>{
     const getStats2D = async ()=>{
       console.log("sono in App.jsx");
-      const stats2D=await statisticsAPI.stats2Dday('08/10/2024', '20/10/2024');
+      const stats2D=await statisticsAPI.stats2Dday('08/07/2024', '20/10/2024');
       setStats2D(stats2D);
     }
     getStats2D();
     console.log(stats2D);
   }, []);
-
-
-
-
 
 
 

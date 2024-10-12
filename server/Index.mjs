@@ -6,7 +6,7 @@ import { insertTicket, getLastNumber } from './src/dao/ticketDAO.mjs';
 import { getServices } from './src/dao/serviceDAO.mjs';
 import { insertTime, getTodayTimeId } from './src/dao/timeDAO.mjs'
 import { getNumberOfCountersForService, getNumberOfServicesForCounter } from './src/dao/counterServicesDao.mjs';
-import { getStats2Dday } from './src/dao/statsDAO.mjs';
+import { getStats2Dmonth, getStats2Dweek, getStats2Dday, getStats3Dmonth, getStats3Dweek, getStats3Dday } from './src/dao/statsDAO.mjs';
 import dayjs from 'dayjs';
 
 const app = express();
@@ -163,10 +163,147 @@ app.post('http://localhost:3001/api/statistics/3d/:type', [
 
 
 
+// Statistics by month:
 
-// Query by year
-app.get('/api/Stats2Dyear', async (req, res) => {
-    console.log("sono in server, ho intercettato la richiesta");
+app.get('/api/Stats2Dmonth', async (req, res) => {
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
+
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
+
+        const stats2D = await getStats2Dmonth();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            // && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd); perchè semplicemente non restituisco il giorno con questa query
+        });
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+app.get('/api/Stats3Dmonth', async (req, res) => {
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
+
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
+
+        const stats2D = await getStats3Dmonth();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            // && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd); perchè semplicemente non restituisco il giorno con questa query
+        });
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+// by week
+app.get('/api/Stats2Dweek', async (req, res) => {
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
+
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
+
+        const stats2D = await getStats2Dweek();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            // && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd); idem come sopra
+        });
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+app.get('/api/Stats3Dweek', async (req, res) => {
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
+
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
+
+        const stats2D = await getStats3Dweek();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            // && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd); idem come sopra
+        });
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+// by day
+app.get('/api/Stats2Dday', async (req, res) => {
     try {
         
         const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
@@ -183,7 +320,11 @@ app.get('/api/Stats2Dyear', async (req, res) => {
         console.log("stats2D: ", stats2D);
 
         
-        const filteredStats = stats2D.filter((item) => Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd));
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd);
+        });
         console.log("Post filtro:");
         console.log("filteredStats: ", filteredStats);
         
@@ -196,8 +337,39 @@ app.get('/api/Stats2Dyear', async (req, res) => {
 
 });
 
+app.get('/api/Stats3Dday', async (req, res) => {
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
 
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
 
+        const stats2D = await getStats3Dday();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => {
+           return Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd)
+            && Number(item.month) >= Number(monthStart) && Number(item.month) <= Number(monthEnd)
+            && Number(item.day) >= Number(dayStart) && Number(item.day) <= Number(dayEnd);
+        });
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
 
 
 
