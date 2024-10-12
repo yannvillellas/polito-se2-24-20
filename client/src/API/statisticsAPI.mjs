@@ -51,7 +51,7 @@ const stats2Dweek = async (startDate, endDate) => {
 const stats2Dmonth = async (startDate, endDate) => {
     
     // Crea l'URL con i parametri startDate e endDate
-    const url = new URL(`${SERVER_URL}/api/Stats2Dday`);
+    const url = new URL(`${SERVER_URL}/api/Stats2Dmonth`);
     url.searchParams.append('startDate', startDate);
     url.searchParams.append('endDate', endDate);
     // url.searchParams.append('type', 'someType'); // Aggiungi il tipo se necessario
@@ -120,7 +120,7 @@ const stats3Dweek = async (startDate, endDate) => {
 const stats3Dmonth = async (startDate, endDate) => {
     
     // Crea l'URL con i parametri startDate e endDate
-    const url = new URL(`${SERVER_URL}/api/Stats3Dday`);
+    const url = new URL(`${SERVER_URL}/api/Stats3Dmonth`);
     url.searchParams.append('startDate', startDate);
     url.searchParams.append('endDate', endDate);
     // url.searchParams.append('type', 'someType'); // Aggiungi il tipo se necessario
