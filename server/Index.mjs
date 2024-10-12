@@ -6,9 +6,12 @@ import { insertTicket, getLastNumber } from './src/dao/ticketDAO.mjs';
 import { getServices } from './src/dao/serviceDAO.mjs';
 import { insertTime, getTodayTimeId } from './src/dao/timeDAO.mjs'
 import { getNumberOfCountersForService, getNumberOfServicesForCounter } from './src/dao/counterServicesDao.mjs';
+import { getStats2Dday } from './src/dao/statsDAO.mjs';
+import dayjs from 'dayjs';
 
 const app = express();
 const port = 3001;
+
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -119,6 +122,7 @@ app.get('/api/counter-services/services/:counterN', [
     }
 })
 
+
 //statisticsAPI
 app.post('http://localhost:3001/api/statistics/2d/:type', [
     check('startDate').notEmpty().isDate({ format: 'DD-MM-YYYY' }),
@@ -155,5 +159,64 @@ app.post('http://localhost:3001/api/statistics/3d/:type', [
         res.status(500).json({ error: "internal server error" }).end();
     }
 })
+
+
+
+
+
+// Query by year
+app.get('/api/Stats2Dyear', async (req, res) => {
+    console.log("sono in server, ho intercettato la richiesta");
+    try {
+        
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        console.log(`Giorno: ${dayStart}`);
+        console.log(`Mese: ${monthStart}`);
+        console.log(`Anno: ${yearStart}`);
+
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        console.log(`Giorno: ${dayEnd}`);
+        console.log(`Mese: ${monthEnd}`);
+        console.log(`Anno: ${yearEnd}`);
+
+        const stats2D = await getStats2Dday();
+        console.log("stats2D: ", stats2D);
+
+        
+        const filteredStats = stats2D.filter((item) => Number(item.year) >= Number(yearStart) && Number(item.year) <= Number(yearEnd));
+        console.log("Post filtro:");
+        console.log("filteredStats: ", filteredStats);
+        
+
+        res.json(stats2D);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(port, () => { console.log(`Server started at http://localhost:${port}`); });
