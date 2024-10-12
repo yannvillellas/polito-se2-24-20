@@ -7,6 +7,9 @@ import { getServices } from './src/dao/serviceDAO.mjs';
 import {insertTime, getTodayTimeId} from './src/dao/timeDAO.mjs'
 import { getNumberOfCountersForService, getNumberOfServicesForCounter } from './src/dao/counterServicesDao.mjs';
 
+import { getNextTicket } from './src/dao/nextCustomer.mjs';
+
+
 const app = express();
 const port = 3001;
 
@@ -19,6 +22,42 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+app.get('/api/NextCustomer', async (req, res) => {
+    try {
+        console.log("sono in NextCustomer");
+        const counterN = req.query.counterN;
+
+        const nextTicket = await getNextTicket(counterN);
+        console.log("nextTicket: ", nextTicket);
+
+        res.json(nextTicket);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
 
 
 //ticketAPI

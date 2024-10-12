@@ -6,8 +6,28 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GetTicket from './components/GetTicket/GetTicket';
 
+import nextCustomerAPI from './api/nextCustomerAPI';
+
 
 function App() {
+
+
+  const [counterNumber, setCounterNumber]= useState(3);
+  useEffect(()=>{
+    const getNextCustomer = async ()=>{
+      console.log("sono in App.jsx");
+      const counterQueue=await nextCustomerAPI.getNextCustomer(counterNumber);
+      console.log("sono in App.jsx");
+      console.log(counterQueue);
+    }
+    getNextCustomer();
+    // salva in Done_ticket il ticket servito e cancella il ticket dalla coda
+  }, []);
+
+
+
+
+
 
   return (
     <Routes>
