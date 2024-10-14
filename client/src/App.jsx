@@ -5,6 +5,7 @@ import Home from './components/Home/Home'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GetTicket from './components/GetTicket/GetTicket';
+import CallCustomer from './components/CallCustomer/CallCustomer.jsx';
 
 import Officer from './components/Officer/Officer';
 
@@ -36,6 +37,7 @@ function App() {
       <Route path='/' element={<Home/>}/>
       <Route path='/customer' element={<GetTicket/>}/>
       <Route path='/officer' element={<Officer/>}/>
+      <Route path='/customer/queue' element={<CallCustomer/>}/>
     </Routes>
   )
 }
