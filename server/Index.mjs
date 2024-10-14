@@ -182,43 +182,6 @@ app.get('/api/counter-services/services/:counterN', [
 
 
 //statisticsAPI
-app.post('http://localhost:3001/api/statistics/2d/:type', [
-    check('startDate').notEmpty().isDate({ format: 'DD-MM-YYYY' }),
-    check('endDate').notEmpty().isDate({ format: 'DD-MM-YYYY' }),
-    check('type').isIn(['daily', 'weekly', 'monthly'])
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    try {
-        const statistics = await getStats2D(req.params.type);   // to import DAO, choose name for function
-        //res.setHeader('Content-Type', 'application/json');
-        return res.status(200).json(statistics).end();
-    } catch (e) {
-        res.status(500).json({ error: "internal server error" }).end();
-    }
-})
-
-app.post('http://localhost:3001/api/statistics/3d/:type', [
-    check('startDate').notEmpty().isDate({ format: 'DD-MM-YYYY' }),
-    check('endDate').notEmpty().isDate({ format: 'DD-MM-YYYY' }),
-    check('type').isIn(['daily', 'weekly', 'monthly'])
-], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-    try {
-        const statistics = await getStats3D(req.params.type);   // to import DAO, choose name for function
-        //res.setHeader('Content-Type', 'application/json');
-        return res.status(200).json(statistics).end();
-    } catch (e) {
-        res.status(500).json({ error: "internal server error" }).end();
-    }
-})
-
-
 
 
 // Statistics by month:
@@ -226,12 +189,12 @@ app.post('http://localhost:3001/api/statistics/3d/:type', [
 app.get('/api/Stats2Dmonth', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [yearStart, monthStart, dayStart] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [yearEnd, monthEnd, dayEnd] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -249,7 +212,7 @@ app.get('/api/Stats2Dmonth', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();
@@ -260,12 +223,12 @@ app.get('/api/Stats2Dmonth', async (req, res) => {
 app.get('/api/Stats3Dmonth', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [yearStart, monthStart, dayStart] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [yearEnd, monthEnd, dayEnd] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -283,7 +246,7 @@ app.get('/api/Stats3Dmonth', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();
@@ -295,12 +258,12 @@ app.get('/api/Stats3Dmonth', async (req, res) => {
 app.get('/api/Stats2Dweek', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [yearStart, monthStart, dayStart] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [yearEnd, monthEnd, dayEnd] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -318,7 +281,7 @@ app.get('/api/Stats2Dweek', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();
@@ -329,12 +292,12 @@ app.get('/api/Stats2Dweek', async (req, res) => {
 app.get('/api/Stats3Dweek', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [yearStart, monthStart,dayStart ] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [yearEnd, monthEnd,dayEnd ] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -352,7 +315,7 @@ app.get('/api/Stats3Dweek', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();
@@ -364,12 +327,12 @@ app.get('/api/Stats3Dweek', async (req, res) => {
 app.get('/api/Stats2Dday', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [dayStart, monthStart, yearStart] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -387,7 +350,7 @@ app.get('/api/Stats2Dday', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();
@@ -398,12 +361,12 @@ app.get('/api/Stats2Dday', async (req, res) => {
 app.get('/api/Stats3Dday', async (req, res) => {
     try {
         
-        const [dayStart, monthStart, yearStart] = req.query.startDate.split("/");
+        const [yearStart, monthStart,dayStart ] = req.query.startDate.split("-");
         console.log(`Giorno: ${dayStart}`);
         console.log(`Mese: ${monthStart}`);
         console.log(`Anno: ${yearStart}`);
 
-        const [dayEnd, monthEnd, yearEnd] = req.query.endDate.split("/");
+        const [yearEnd, monthEnd, dayEnd] = req.query.endDate.split("-");
         console.log(`Giorno: ${dayEnd}`);
         console.log(`Mese: ${monthEnd}`);
         console.log(`Anno: ${yearEnd}`);
@@ -421,7 +384,7 @@ app.get('/api/Stats3Dday', async (req, res) => {
         console.log("filteredStats: ", filteredStats);
         
 
-        res.json(stats2D);
+        res.json(filteredStats);
 
     } catch (error) {
         res.status(500).json({ error: "internal server error" }).end();

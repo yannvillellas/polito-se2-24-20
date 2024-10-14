@@ -13,7 +13,7 @@ import Officer from './components/Officer/Officer';
 function App() {
 
   // Mi serve per testare il fetch per le statistiche
-  const [stats2D, setStats2D]= useState([]);
+  /*const [stats2D, setStats2D]= useState([]);
   useEffect(()=>{
     const getStats2D = async ()=>{
       console.log("sono in App.jsx");
@@ -22,7 +22,7 @@ function App() {
     }
     getStats2D();
     console.log(stats2D);
-  }, []);
+  }, []);*/
 
 
   /*

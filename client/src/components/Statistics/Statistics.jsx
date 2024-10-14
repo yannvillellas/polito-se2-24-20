@@ -16,13 +16,15 @@ function Statistics(props){
     const search = async (parameters)=>{
         let statistics2D;
         let statistics3D;
-
-        console.log(parameters.type);
+        
+        //console.log(parameters.type);
         if (parameters.type=='daily') {
             await setStatType('daily');
             console.log("settato stato del tipo in daily")
             statistics2D = await statsAPI.stats2Dday(parameters.startDate, parameters.endDate);
             statistics3D = await statsAPI.stats3Dday(parameters.startDate, parameters.endDate);
+            console.log(stats2D);
+            console.log(stats3D);
         }else if(parameters.type=='weekly'){
             await setStatType('weekly');
             statistics2D = await statsAPI.stats2Dweek(parameters.startDate, parameters.endDate);
@@ -33,8 +35,8 @@ function Statistics(props){
             statistics3D = await statsAPI.stats2Dmonth(parameters.startDate, parameters.endDate);
         }
         
-        setStats2D(statistics2D);
-        setStats3D(statistics3D);
+        await setStats2D(statistics2D);
+        await setStats3D(statistics3D);
     }
 
     /*useEffect(()=>{
@@ -72,7 +74,7 @@ function FormStats(props){
         event.preventDefault();
         props.setSearched(true);
         const parameters = { startDate, endDate, type };
-        console.log(parameters);
+        //console.log(parameters);
         props.search(parameters);
        
     }
