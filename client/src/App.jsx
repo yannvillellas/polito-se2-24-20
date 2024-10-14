@@ -5,6 +5,7 @@ import Home from './components/Home/Home'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GetTicket from './components/GetTicket/GetTicket';
+import CallCustomer from './components/CallCustomer/CallCustomer.jsx';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path='/*' element={<AlertNotFound/>}/>
       <Route path='/' element={<Home/>}/>
       <Route path='/customer' element={<GetTicket/>}/>
+      <Route path='/customer/queue' element={<CallCustomer/>}/>
     </Routes>
   )
 }
