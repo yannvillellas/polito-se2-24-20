@@ -3,7 +3,7 @@ const SERVER_URL = 'http://localhost:3001'
 
 
 const saveDoneTicket = async (actualTicketNumber, actualCounter) => {
-    console.log("sono in statisticsAPI, sto mandando", actualTicketNumber, actualCounter);
+    console.log("sono in nextCustomerAPI, sto mandando", actualTicketNumber, actualCounter);
     // Crea l'URL con il parametro actualTicket
     const url = new URL(`${SERVER_URL}/api/DoneTicket`);
 
@@ -47,5 +47,5 @@ const getNextCustomer = async (counterN) => {
 };
 
 
-const nextCAPI = {getNextCustomer, saveDoneTicket} 
-export default nextCAPI
+const nextCustomerAPI = {getNextCustomer, saveDoneTicket} 
+export default nextCustomerAPI
