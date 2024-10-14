@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container, Card, Row, Col, Table, Spinner, Button} from 'react-bootstrap';
-import nextCustomerAPI from '../../api/nextCustomerAPI';
+import nextCustomerAPI from '../../API/nextCustomerAPI.mjs';
 
 
 function Officer(){

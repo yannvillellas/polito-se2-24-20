@@ -2,11 +2,12 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { check, validationResult } from 'express-validator';
-import { insertTicket, getLastNumber } from './src/dao/ticketDAO.mjs';
+import { insertTicket, getLastNumber, deleteTicket } from './src/dao/ticketDAO.mjs';
 import { getServices } from './src/dao/serviceDAO.mjs';
 import { insertTime, getTodayTimeId } from './src/dao/timeDAO.mjs'
 import { getNumberOfCountersForService, getNumberOfServicesForCounter } from './src/dao/counterServicesDao.mjs';
 import { getStats2Dmonth, getStats2Dweek, getStats2Dday, getStats3Dmonth, getStats3Dweek, getStats3Dday } from './src/dao/statsDAO.mjs';
+import { insertInDone_Ticket } from './src/dao/nextCustomer.mjs';
 import dayjs from 'dayjs';
 
 import { getNextTicket, getTicketInfo } from './src/dao/nextCustomer.mjs';
@@ -36,15 +37,16 @@ app.post('/api/DoneTicket', async (req, res) => {
         const ticketInfo = await getTicketInfo(ticketNumber);
         console.log("sono appena uscito da getTicketInfo", ticketInfo);
         
-        /* Non funziona:
+
         await insertInDone_Ticket(ticketInfo, counter);
         console.log("sono in doneTicket, ho finito");
         
         await deleteTicket(ticketNumber);
         res.status(201).end();
-        */
+        
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "internal server error" }).end();
     }
 

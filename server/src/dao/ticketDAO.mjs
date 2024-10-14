@@ -43,3 +43,20 @@ export const getLastNumber = () => {
         });
     });
 };
+
+
+export const deleteTicket = (ticketNumber) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM Ticket WHERE number = ?';
+        db.run(query, [ticketNumber], (err) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            }
+
+            
+            resolve();
+            
+        });
+    });
+}
