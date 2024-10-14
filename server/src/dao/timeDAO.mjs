@@ -35,11 +35,12 @@ export const insertTime = () => {
         const day = dayjs().date(); 
         const month = dayjs().month() + 1;
         const year = dayjs().year();
+        const week = Math.floor((day - 1) / 7) + 1;
 
-        const query = `INSERT INTO Time ("day", "month", "year")
-                        VALUES (?, ?, ?);`
+        const query = `INSERT INTO Time ("day", "month", "year", "week")
+                        VALUES (?, ?, ?, ?);`
 
-        db.run(query, [day, month, year], function(err)  {
+        db.run(query, [day, month, year, week], function(err)  {
             if (err) {
                 console.error(err.message)
                 reject(err);
