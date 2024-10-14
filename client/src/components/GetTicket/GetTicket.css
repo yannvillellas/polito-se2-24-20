@@ -1,71 +1,70 @@
-/* Imposta un font di base e un colore di sfondo per il corpo */
 body {
-    font-family: 'Arial', sans-serif; /* Font di base */
-    background-color: #f4f4f9; /* Colore di sfondo */
-    color: #333; /* Colore del testo */
-    margin: 0; /* Rimuove margini */
-    padding: 20px; /* Aggiunge padding */
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 20px;
 }
 
-/* Contenitore principale per il componente */
 .service-buttons {
     display: flex;
-    flex-direction: column; /* Disposizione verticale */
-    align-items: center; /* Allinea al centro */
-    margin-bottom: 20px; /* Spazio inferiore */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 
-/* Stile per i pulsanti */
 button {
-    width: 200px; /* Larghezza fissa per i pulsanti */
-    padding: 15px; /* Padding interno */
-    border: none; /* Rimuove il bordo */
-    border-radius: 5px; /* Bordo arrotondato */
-    font-size: 16px; /* Dimensione del font */
-    transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+    width: 180px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #e6e6e6; 
+    color: #333;
 }
 
-/* Pulsanti per i servizi */
-button.info {
-    background-color: #007bff; /* Colore di sfondo per il pulsante info */
-    color: #fff; /* Colore del testo */
+.ticket-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
 }
 
-button.info:hover {
-    background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
+.ticket-number {
+    font-size: 36px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
 }
 
-/* Pulsante per ottenere il numero */
-button.danger {
-    background-color: #dc3545; /* Colore di sfondo per il pulsante per ottenere numero */
-    color: #fff; /* Colore del testo */
+.waiting-time {
+    font-size: 20px;
+    color: #333;
 }
 
-button.danger:hover {
-    background-color: #c82333; /* Colore di sfondo al passaggio del mouse */
+.ticket-info {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Stile per il messaggio del numero */
-p {
-    font-size: 24px; /* Dimensione del font per il numero */
-    font-weight: bold; /* Grassetto */
-    text-align: center; /* Allinea al centro */
-    margin-top: 20px; /* Spazio superiore */
-    color: #007bff; /* Colore blu */
+.info-paragraph {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-/* Aggiungi uno spazio di separazione */
-hr {
-    margin: 30px 0; /* Margini per separatori orizzontali */
-}
-
-/* Stile per la sezione di avviso */
-.alert {
-    background-color: #f8d7da; /* Colore di sfondo per gli avvisi */
-    color: #721c24; /* Colore del testo per gli avvisi */
-    padding: 10px; /* Padding interno */
-    border: 1px solid #f5c6cb; /* Bordo per gli avvisi */
-    border-radius: 5px; /* Bordo arrotondato */
-    margin: 20px 0; /* Spazio superiore e inferiore */
-    text-align: center; /* Allinea al centro */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
