@@ -4,6 +4,7 @@ import TicketAPI from "../../API/ticketAPI.mjs";
 import ServiceAPI from "../../API/serviceAPI.mjs";
 import TimeAPI from "../../API/TimeAPI.mjs";
 import CounterServicesAPI from "../../API/CounterSarvicesAPI.mjs";
+import { useNavigate } from "react-router-dom";
 import './getTicket.css';
 
 const GetTicket = () => {
@@ -15,6 +16,7 @@ const GetTicket = () => {
     const [waitingTime, setWaitingTime] = useState(null);
     const [hoveredButton, setHoveredButton] = useState(null); 
     const [clickedButton, setClickedButton] = useState(false); 
+    const navigate = useNavigate()
     
     useEffect(() => {
         const fetchServices = async () => {
@@ -55,12 +57,6 @@ const GetTicket = () => {
                 const newNumber = await TicketAPI.createTicket(lastNumber, estimatedTime, selectedService.serviceId, timeId);
                 setNumber(newNumber);
 
-                // timeout to reset page after 5 seconds
-                setTimeout(() => {
-                    setNumber(null);
-                    setSelectedService(null);
-                    setWaitingTime(null);
-                }, 5000); 
             } catch (error) {
                 console.error("Errore durante la generazione del ticket:", error);
             }
@@ -127,7 +123,28 @@ const GetTicket = () => {
                     <p className="ticket-info" style={{ fontSize: '18px', color: '#333' }}>Il tuo numero di ticket</p>
                     <p className="ticket-number" style={{ fontSize: '36px', color: '#ABCE85', fontWeight: 'bold' }}>{number}</p>
                     <p className="waiting-time" style={{ fontSize: '18px', color: '#333' }}>Tempo di attesa stimato: {formatWaitingTime(waitingTime)}</p>
+                    
+                    <Button
+                        key = {-1}
+                        style={{
+                            backgroundColor: '#6e92b2' ,
+                            color: 'white',
+                            border: 'none',
+                            marginBottom: '10px',
+                            transition: 'background-color 0.3s ease, border 0.3s ease',
+                        }}
+                        onMouseEnter={() => setHoveredButton(-1)}
+                        onMouseLeave={() => setHoveredButton(null)}
+                        onMouseDown={() => setClickedButton(-1)}
+                        onMouseUp={() => setClickedButton(false)}
+                        onClick={() => {
+                            navigate('/customer/queue')
+                        }}
+                    >
+                        GO TO DISPLAY
+                    </Button>
                 </div>
+
             ) : (
                 <div className="button-container">
                     <Button 
