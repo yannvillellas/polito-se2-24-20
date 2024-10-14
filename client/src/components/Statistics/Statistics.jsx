@@ -17,21 +17,20 @@ function Statistics(props){
         let statistics2D;
         let statistics3D;
 
-        statistics2D=await statsAPI.getStats2D(parameters.startDate, parameters.endDate, parameters.type);
-        statistics3D=await statsAPI.getStats3D(parameters.startDate, parameters.endDate, parameters.type);
-
+        console.log(parameters.type);
         if (parameters.type=='daily') {
-            setStatType('daily');
-            /*statistics2D = await statsAPI.getDailyStats2D(parameters.startDate, parameters.endDate);
-            statistics3D = await statsAPI.getDailyStats3D(parameters.startDate, parameters.endDate);*/
+            await setStatType('daily');
+            console.log("settato stato del tipo in daily")
+            statistics2D = await statsAPI.stats2Dday(parameters.startDate, parameters.endDate);
+            statistics3D = await statsAPI.stats3Dday(parameters.startDate, parameters.endDate);
         }else if(parameters.type=='weekly'){
-            setStatType('weekly');
-            /*statistics2D = await statsAPI.getWeeklyStats2D(parameters.startDate, parameters.endDate);
-            statistics3D = await statsAPI.getWeeklyStats3D(parameters.startDate, parameters.endDate);*/
+            await setStatType('weekly');
+            statistics2D = await statsAPI.stats2Dweek(parameters.startDate, parameters.endDate);
+            statistics3D = await statsAPI.stats3Dweek(parameters.startDate, parameters.endDate);
         }else{
-            setStatType('monthly');
-            /*statistics2D = await statsAPI.getMonthlyStats2D(parameters.startDate, parameters.endDate);
-            statistics3D = await statsAPI.getMonthlyStats3D(parameters.startDate, parameters.endDate);*/
+            await setStatType('monthly');
+            statistics2D = await statsAPI.stats2Dmonth(parameters.startDate, parameters.endDate);
+            statistics3D = await statsAPI.stats2Dmonth(parameters.startDate, parameters.endDate);
         }
         
         setStats2D(statistics2D);
@@ -73,6 +72,7 @@ function FormStats(props){
         event.preventDefault();
         props.setSearched(true);
         const parameters = { startDate, endDate, type };
+        console.log(parameters);
         props.search(parameters);
        
     }

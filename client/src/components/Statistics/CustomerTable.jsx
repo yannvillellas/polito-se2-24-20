@@ -34,12 +34,14 @@ function CustomerTable(props) {
 
     // Component to visualize table
     const { time: transformedData, services } = transformData(props.stats);  //use query result to try with mock data
-
+    console.log(props.statType)
     return (
         <table border="1">
             <thead>
                 <tr>
-                    <th>{props.statType=='daily'? 'days': props.statType=='weekly'? 'weeks': 'months'}</th>
+                    {props.statType === 'daily' && <th>Days</th>}
+                    {props.statType === 'weekly' && <th>Weeks</th>}
+                    {props.statType === 'monthly' && <th>Months</th>}
                     {services.map((service) => (
                         <th key={service}>{service}</th>
                     ))}
