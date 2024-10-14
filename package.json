@@ -1,0 +1,8 @@
+{
+    "name": "polito-se2-24-20",
+    "version": "1.0.0",
+    "scripts": {
+      "test": "npm run test:server",
+      "test:server": "cd server && npm test"
+    }
+  }
