@@ -6,12 +6,12 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GetTicket from './components/GetTicket/GetTicket';
 
-import nextCustomerAPI from './api/nextCustomerAPI';
+import Officer from './components/Officer/Officer';
 
 
 function App() {
 
-
+  /*
   const [counterNumber, setCounterNumber]= useState(3);
   useEffect(()=>{
     const getNextCustomer = async ()=>{
@@ -23,6 +23,7 @@ function App() {
     getNextCustomer();
     // salva in Done_ticket il ticket servito e cancella il ticket dalla coda
   }, []);
+  */
 
 
 
@@ -34,6 +35,7 @@ function App() {
       <Route path='/*' element={<AlertNotFound/>}/>
       <Route path='/' element={<Home/>}/>
       <Route path='/customer' element={<GetTicket/>}/>
+      <Route path='/officer' element={<Officer/>}/>
     </Routes>
   )
 }

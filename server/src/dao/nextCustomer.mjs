@@ -40,3 +40,69 @@ export const getNextTicket= (counterNumber) => {
 
         
 })}
+
+// funziona
+export const getTicketInfo = (ticketNumber) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT * 
+            FROM Ticket 
+            WHERE number = ? 
+        `;
+
+        db.all(query, [ticketNumber], (err, rows) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            } else {
+                console.log(rows);
+    
+                const ticketInfo = {
+                    timeId : rows[0].timeId,
+                    serviceId: rows[0].serviceId,
+                    number: rows[0].number
+                };
+                resolve(ticketInfo);
+                
+            }
+        });
+    });
+}
+
+export const insertInDone_Ticket = (ticketInfo, counter) => {
+    return new Promise((resolve, reject) => {
+        console.log("sono in insertInDone_Ticket, con", ticketInfo, counter);
+        
+        const sql = `
+            UPDATE Done_Ticket 
+            SET numberTicketServed = numberTicketServed + 1 
+            WHERE timeId = ? AND serviceId = ? AND counterN = ?
+        `; 
+        db.run(sql, [ticketInfo.timeId, ticketInfo.serviceId, counter], function(err) {
+            if(err)
+              reject(err);
+            else
+              resolve(this.changes);
+        });
+          
+        
+    });
+}
+
+export const deleteTicket = (ticketNumber) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM Ticket WHERE number = ?';
+        db.all(query, [ticketNumber], (err, rows) => {
+            if (err) {
+                console.error(err.message);
+                reject(err);
+            }
+
+            if (rows.length === 0) {
+                reject("Ticket not found");
+            } else {
+                resolve(this.changes);
+            }
+        });
+    });
+}
