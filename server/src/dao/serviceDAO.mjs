@@ -35,3 +35,20 @@ export const getServiceById = (serviceId)=>{
         })
     })
 }
+
+
+export const updateServiceNumberInQueue = (serviceId) => {
+    console.log("sono in serviceDAO, updateServiceNumberInQueue, sto mandando", serviceId);
+    return new Promise((resolve, reject) => {
+        const updateServiceNumberInQueueQuery = `UPDATE Service SET numberInQueue = numberInQueue + 1 WHERE serviceId = ?`;
+        
+        db.run(updateServiceNumberInQueueQuery, [serviceId], function(err) {
+            if (err) {
+                console.log("Errore nell'aggiornamento del numero di clienti in coda per quel servizio", err);
+                reject(err);
+            } else {
+                resolve(this.changes); // Restituisce il numero di righe modificate
+            }
+        });
+    });
+}

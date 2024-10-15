@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 
 import { getNextTicket, getTicketInfo } from './src/dao/nextCustomer.mjs';
 import {getAllCustomers} from './src/dao/callCustomerDAO.mjs';
-import {getServiceById} from './src/dao/serviceDAO.mjs';
+import {getServiceById, updateServiceNumberInQueue} from './src/dao/serviceDAO.mjs';
 import {insertCallingTicket, deleteFromCallingTicket} from './src/dao/callCustomerDAO.mjs';
 
 const app = express();
@@ -139,7 +139,23 @@ app.post('/api/saveCallingTicket', async (req, res) => {
 });
 
 
+app.put('/api/service/queue', async (req, res) => {
+    const serviceId = req.body;
+    console.log("sono in index, updateServiceNumberInQueue, ecco il serviceId", serviceId);
+    if (!serviceId) {
+        return res.status(400).json({ error: 'serviceId is required' });
+    }
 
+    
+    const success =  await updateServiceNumberInQueue(serviceId);
+
+    if (success) {
+        return res.status(200).json({ message: 'Service number updated successfully' });
+    } else {
+        return res.status(500).json({ error: 'Failed to update service number' });
+    }
+        
+});
 
 
 
