@@ -63,8 +63,10 @@ app.post('/api/DoneTicket', async (req, res) => {
         // cancella da TICKET
         await deleteTicket(ticketNumber); // Funziona
 
+        
         // cancella da callingTicket
-        await deleteFromCallingTicket(ticketNumber); // Non funziona
+        await deleteFromCallingTicket(ticketNumber); // funziona ma poi index->saveCallingTicket me la riscrive
+        
 
         res.status(201).end();
 

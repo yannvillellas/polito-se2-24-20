@@ -13,7 +13,8 @@ function Officer(){
 
         if(actualCustomerInfo){
             // Se prima c'era un ticket chiamato, lo salvo come servito
-            nextCustomerAPI.saveDoneTicket(actualCustomerInfo, actualCounter); //  DA testare 2
+            await nextCustomerAPI.saveDoneTicket(actualCustomerInfo, actualCounter); //  Sembra funzionare ,mancaava await
+            // deleteFromCallingTicket(actualCustomerInfo.number); 
         }
 
         const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter); // Funziona: il nextCustomer è: {serviceId: 1, number: 1}
