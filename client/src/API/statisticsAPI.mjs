@@ -17,10 +17,7 @@ const stats2Dday = async (startDate, endDate) => {
 
     // Controlla se la risposta è OK
     if (response.ok) {
-        console.log("response from server ok")
-        console.log(response)
         const statsJson = await response.json(); // Ottieni i dati in formato JSON
-        console.log(statsJson)
         return statsJson; // Restituisci i dati
     } else {
         throw new Error('Error to retrieve statistics from the server'); // Gestisci gli errori

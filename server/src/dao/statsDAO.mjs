@@ -6,12 +6,12 @@ export const getStats2Dmonth= () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, serviceId, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, S.name, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T , Service S
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, serviceId
-            ORDER BY T.year, T.month, serviceId
+            GROUP BY T.year, T.month, D.serviceId
+            ORDER BY T.year, T.month, D.serviceId
         `;
         
         
@@ -26,7 +26,7 @@ export const getStats2Dmonth= () => {
             const mappedRows = rows.map(row => ({
                 year: row.year,
                 month: row.month,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
@@ -42,12 +42,12 @@ export const getStats3Dmonth= () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, serviceId, counterN, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, S.name, counterN, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T , Service S
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, serviceId, counterN
-            ORDER BY T.year, T.month, serviceId, counterN
+            GROUP BY T.year, T.month, D.serviceId, counterN
+            ORDER BY T.year, T.month, D.serviceId, counterN
         `;
         
         // Eseguiamo la query
@@ -62,7 +62,7 @@ export const getStats3Dmonth= () => {
                 year: row.year,
                 month: row.month,
                 counterN: row.counterN,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
@@ -77,12 +77,12 @@ export const getStats2Dweek= () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, T.week, serviceId, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, T.week, S.name, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T, Service S 
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, T.week, serviceId
-            ORDER BY T.year, T.month, T.week, serviceId
+            GROUP BY T.year, T.month, T.week, D.serviceId
+            ORDER BY T.year, T.month, T.week, D.serviceId
         `;
         
         
@@ -98,7 +98,7 @@ export const getStats2Dweek= () => {
                 year: row.year,
                 month: row.month,
                 week: row.week,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
@@ -115,12 +115,12 @@ export const getStats3Dweek= () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, T.week, serviceId, counterN, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, T.week, S.name, counterN, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T, Service S
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, T.week, serviceId, counterN
-            ORDER BY T.year, T.month, T.week, serviceId, counterN
+            GROUP BY T.year, T.month, T.week, D.serviceId, counterN
+            ORDER BY T.year, T.month, T.week, D.serviceId, counterN
         `;
         
         
@@ -137,7 +137,7 @@ export const getStats3Dweek= () => {
                 month: row.month,
                 week: row.week,
                 counterN: row.counterN,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
@@ -155,12 +155,12 @@ export const getStats2Dday = () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, T.week, T.day, serviceId, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, T.week, T.day, S.name, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T, Service S 
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, T.week, T.day, serviceId
-            ORDER BY T.year, T.month, T.week, T.day, serviceId
+            GROUP BY T.year, T.month, T.week, T.day, D.serviceId
+            ORDER BY T.year, T.month, T.week, T.day, D.serviceId
         `;
         
         
@@ -176,7 +176,7 @@ export const getStats2Dday = () => {
                 year: row.year,
                 month: row.month,
                 day: row.day,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
@@ -193,12 +193,12 @@ export const getStats3Dday = () => {
 
         // Costruiamo la query per filtrare nell'intervallo di date
         const query = `
-            SELECT T.year, T.month, T.week, T.day, serviceId, counterN, COUNT(*) AS totalTickets
-            FROM Done_ticket D, Time T 
-            WHERE D.timeId = T.timeId 
+            SELECT T.year, T.month, T.week, T.day, S.name, counterN, COUNT(*) AS totalTickets
+            FROM Done_ticket D, Time T, Service S
+            WHERE D.timeId = T.timeId and S.serviceId=D.serviceId
 
-            GROUP BY T.year, T.month, T.week, T.day, serviceId, counterN
-            ORDER BY T.year, T.month, T.week, T.day, serviceId, counterN
+            GROUP BY T.year, T.month, T.week, T.day, D.serviceId, counterN
+            ORDER BY T.year, T.month, T.week, T.day, D.serviceId, counterN
         `;
         
         
@@ -215,7 +215,7 @@ export const getStats3Dday = () => {
                 month: row.month,
                 day: row.day,
                 counterN: row.counterN,
-                serviceId: row.serviceId,
+                serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
 
