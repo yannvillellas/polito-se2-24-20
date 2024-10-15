@@ -76,19 +76,35 @@ export const insertInDone_Ticket = (ticketInfo, counter) => {
     return new Promise((resolve, reject) => {
         console.log("sono in insertInDone_Ticket, con", ticketInfo, counter);
         
-        const sql = `
+        const updateSql = `
             UPDATE Done_Ticket 
             SET numberTicketServed = numberTicketServed + 1 
             WHERE timeId = ? AND serviceId = ? AND counterN = ?
         `; 
-        db.run(sql, [ticketInfo.timeId, ticketInfo.serviceId, counter], function(err) {
-            if(err)
-              reject(err);
-            else
-              resolve(this.changes);
-        });
-          
         
+        db.run(updateSql, [ticketInfo.timeId, ticketInfo.serviceId, counter], function(err) {
+            if (err) {
+                return reject(err);
+            }
+            
+            if (this.changes === 0) {
+                // Nessuna riga aggiornata, quindi inseriamo un nuovo record
+                console.log("sono in inserInDone_Ticket, non ho trovato il ticket, lo inserisco");
+                const insertSql = `
+                    INSERT INTO Done_Ticket (timeId, serviceId, counterN, numberTicketServed) 
+                    VALUES (?, ?, ?, 1)
+                `;
+                
+                db.run(insertSql, [ticketInfo.timeId, ticketInfo.serviceId, counter], function(err) {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve(this.lastID); // Restituisce l'ID dell'ultimo record inserito
+                });
+            } else {
+                // Ritorna il numero di righe aggiornate
+                resolve(this.changes);
+            }
+        });
     });
 }
-

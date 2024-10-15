@@ -30,20 +30,51 @@ export const getAllCustomers= () => {
 
 export const insertCallingTicket = (serviceName, ticketNumber, actualCounter) => {
     return new Promise((resolve, reject) => {
-        const query = `
-            INSERT INTO CallingTicket(ticketNumber, serviceName, courrierNumber)
-            VALUES(?, ?, ?)
+        const checkQuery = `
+            SELECT COUNT(*) AS count FROM CallingTicket WHERE ticketNumber = ?
         `;
-        console.log("sono in insertCallingTicket", ticketNumber, serviceName, actualCounter);
 
-        db.run(query, [ticketNumber, serviceName, actualCounter], (err) => {
+        db.get(checkQuery, [ticketNumber], (err, row) => {
+            if (err) {
+                return reject(err);
+            }
+
+            if (row.count == 0) {
+            
+                const insertQuery = `
+                    INSERT INTO CallingTicket(ticketNumber, serviceName, courrierNumber)
+                    VALUES(?, ?, ?)
+                `;
+
+                db.run(insertQuery, [ticketNumber, serviceName, actualCounter], (err) => {
+                    if (err) {
+                        console.error(err.message);
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            }
+        });
+    });
+};
+
+
+export const deleteFromCallingTicket = (ticketNumber) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            DELETE FROM CallingTicket
+            WHERE ticketNumber = ?
+        `;
+
+        db.run(query, [ticketNumber], (err) => {
             if (err) {
                 console.error(err.message);
                 reject(err);
             } else {
+                console.log(`Row with ticketNumber ${ticketNumber} deleted`);
                 resolve();
             }
         });
     });
-
 }

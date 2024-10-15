@@ -15,14 +15,15 @@ function Officer(){
         if(actualTicketNumber){
             // salvo nel database Done_ticket:
             console.log("sono in NextCustomer.jsx, saveDoneTicket");
-            nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter);
+            nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter); //  DA testare 2
 
         }
-        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter);
+
+        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter); // Da testare 1
         console.log("sono in NextCustomer.jsx, ecco il nextCustomer", nextCustomer);
         // Lo salvo nel database ticket calling
         console.log("sono in NextCustomer.jsx, saveCallingTicket");
-        callCustomer.saveCallingTicket(nextCustomer, actualCounter);
+        callCustomer.saveCallingTicket(nextCustomer, actualCounter); // Da testare 3
         console.log("sono in NextCustomer.jsx, sono tornato da saveCallingTicket ");
         setActualTicketNumber(nextCustomer);
         

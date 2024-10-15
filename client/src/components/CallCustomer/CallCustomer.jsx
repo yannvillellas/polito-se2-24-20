@@ -13,12 +13,13 @@ function CallCustomer(props) {
 
     const [services, setServices] = useState([]);
     useEffect(()=>{
-        const fetchServices = async ()=>{
+        const interval = setInterval(async () => {
+        
             const listServices = await ServiceAPI.getServices();
             setServices(listServices);
-        }
-
-        fetchServices()
+    
+            return () => clearInterval(interval); // Cleanup quando il componente viene smontato
+        }, 5000); // Poll ogni 5 secondi
     }, [])
 
     const [customers, setCustomers] = useState([]);
@@ -26,9 +27,11 @@ function CallCustomer(props) {
     useEffect(() => {
         // Polling 
         const interval = setInterval(async () => {
+            
             const customers = await callCustomer.getAllCustomers();
             console.log("sono in CallCustomer, ecco i customers", customers);
             setCustomers(customers);
+
             }, 5000); // Poll ogni 5 secondi
         return () => clearInterval(interval); // Cleanup quando il componente viene smontato
     }, []);

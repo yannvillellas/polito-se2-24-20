@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import { getNextTicket, getTicketInfo } from './src/dao/nextCustomer.mjs';
 import {getAllCustomers} from './src/dao/callCustomerDAO.mjs';
 import {getServiceById} from './src/dao/serviceDAO.mjs';
-import {insertCallingTicket} from './src/dao/callCustomerDAO.mjs';
+import {insertCallingTicket, deleteFromCallingTicket} from './src/dao/callCustomerDAO.mjs';
 
 const app = express();
 const port = 3001;
@@ -37,13 +37,21 @@ app.post('/api/DoneTicket', async (req, res) => {
         const ticketNumber = req.body.number;
         const counter = req.body.counter;
         const ticketInfo = await getTicketInfo(ticketNumber);
+
+    
+
         console.log("sono appena uscito da getTicketInfo", ticketInfo);
 
-
+        // non è stato inserito il ticket
         await insertInDone_Ticket(ticketInfo, counter);
         console.log("sono in doneTicket, ho finito");
 
+        // cancella da TICKET
         await deleteTicket(ticketNumber);
+        // cancella da callingTicket
+        console.log("sto per cancellare da callingTicket", ticketNumber);
+        await deleteFromCallingTicket(ticketNumber);
+
         res.status(201).end();
 
 
