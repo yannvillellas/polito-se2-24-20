@@ -29,7 +29,7 @@ export const getStats2Dmonth= () => {
                 serviceName: row.name,
                 totalTickets: row.totalTickets
             }));
-
+            console.log(mappedRows)
             resolve(mappedRows);
 
         });

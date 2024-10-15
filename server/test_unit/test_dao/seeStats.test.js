@@ -4,7 +4,7 @@ import { test, expect, jest } from "@jest/globals"
 import sqlite3 from 'sqlite3';
 const { Database } = sqlite3.verbose();
 
-import { getStats2Dday,getStats2Dmonth,getStats2Dweek } from "../../src/dao/statsDAO.mjs";
+import { getStats2Dday,getStats2Dmonth,getStats2Dweek,getStats3Dday,getStats3Dweek,getStats3Dmonth } from "../../src/dao/statsDAO.mjs";
 
 describe("getStats2Dmonth", () => {
 
@@ -14,37 +14,42 @@ describe("getStats2Dmonth", () => {
     });
 
     test("correct getStats2Dmonth DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
 
-        let data=[
-            {time:'10',sevice:'s1', count:'130'},  //time could be also the full data that is elaborated then in the server
-            {time:'10', service:'s2', count:'150'},
-            {time:'11', service:'s1', count:'76'},
-            {time:'11', service:'s3', count:'29'},
+        let DBdata=[
+            {year:'2023' ,month:'10' ,name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,name:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,name:'SPID', totalTickets:'26'},
+        ]
+
+        let resultData=[
+            {year:'2023' ,month:'10' ,serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,serviceName:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,serviceName:'SPID', totalTickets:'26'},
         ]
 
         /*mock of DB result*/
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null, DBdata);
             return ({});
         });
 
         /*calling function to test*/
-        await expect(getStats2Dmonth(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats2Dmonth()).resolves.toStrictEqual(resultData);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
     test("getStats2Dmonth DAO - Error", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
             callback(Error);
             return ({});
         });
 
-        await expect(getStats2Dmonth(startData, endData)).rejects.toBe(Error);     //see if parameters changes
+        await expect(getStats2Dmonth()).rejects.toBe(Error);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
@@ -59,21 +64,28 @@ describe("getStats2Dweek", () => {
     });
 
     test("correct getStats2Dweek DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/10/2024"
+        let DBdata=[
+            {year:'2023' ,month:'10' ,week:'1',name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,week:'1',name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,week:'1',name:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,week:'1',name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,week:'2',name:'SPID', totalTickets:'26'},
+        ]
 
-        let data=[
-            {time:'week_n',sevice:'s1', count:'130'}, //time could be also the full data that is elaborated then in the server
-            {time:'week_n',sevice:'s2', count:'0'},
-            {time:'week_n',sevice:'s3', count:'51'},       
+        let resultData=[
+            {year:'2023' ,month:'10' ,week:'1',serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,week:'1',serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,week:'1',serviceName:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,week:'1',serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,week:'2',serviceName:'SPID', totalTickets:'26'},
         ]
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null, DBdata);
             return ({});
         });
 
-        await expect(getStats2Dweek(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats2Dweek()).resolves.toStrictEqual(resultData);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
@@ -99,21 +111,28 @@ describe("getStats2Dday", () => {
     });
 
     test("correct getStats2Dday DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/10/2024"
+        let DBdata=[
+            {year:'2023' ,month:'10' ,day:'10',name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,day:'10',name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,day:'12',name:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,day:'12',name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,day:'30',name:'SPID', totalTickets:'26'},
+        ]
 
-        let data=[
-            {time:'10/10/2024',sevice:'s1', count:'130'}, //time could be also the full data that is elaborated then in the server
-            {time:'10/10/2024',sevice:'s2', count:'35'},
-            {time:'11/10/2024',sevice:'s2', count:'51'},       
+        let resultData=[
+            {year:'2023' ,month:'10' ,day:'10',serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,day:'10',serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,day:'12',serviceName:'spedizioni', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,day:'12',serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,day:'30',serviceName:'SPID', totalTickets:'26'},
         ]
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null,DBdata );
             return ({});
         });
 
-        await expect(getStats2Dday(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats2Dday()).resolves.toStrictEqual(resultData);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
@@ -126,7 +145,7 @@ describe("getStats2Dday", () => {
             return ({});
         });
 
-        await expect(getStats2Dday(startData, endData)).rejects.toBe(Error);     //see if parameters changes
+        await expect(getStats2Dday()).rejects.toBe(Error);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
@@ -142,37 +161,39 @@ describe("getStats3Dmonth", () => {
     });
 
     test("correct getStats3Dmonth DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
+        let DBdata=[
+            {year:'2023' ,month:'10' ,counterN:'1',name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,counterN:'2',name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,counterN:'1',name:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,counterN:'3',name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,counterN:'1',name:'SPID', totalTickets:'26'},
+        ]
 
-        let data=[//time could be also the full data that is elaborated then in the server
-            {time:'10',sevice:'s1',counter:'c1', count:'130'}, 
-            {time:'10',sevice:'s1',counter:'c2', count:'54'}, 
-            {time:'10', service:'s2',counter:'c1', count:'150'},
-            {time:'10', service:'s2',counter:'c3', count:'34'},
-            {time:'11', service:'s1', counter:'c2', count:'76'},
-            {time:'11', service:'s3',counter:'c2', count:'29'},
+        let resultData=[
+            {year:'2023' ,month:'10' ,counterN:'1',serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,counterN:'2',serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,counterN:'1',serviceName:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,counterN:'3',serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,counterN:'1',serviceName:'SPID', totalTickets:'26'},
         ]
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null, DBdata);
             return ({});
         });
 
-        await expect(getStats3Dmonth(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats3Dmonth()).resolves.toStrictEqual(resultData);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
     test("getStats3Dmonth DAO - Error", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
             callback(Error);
             return ({});
         });
 
-        await expect(getStats3Dmonth(startData, endData)).rejects.toBe(Error);     //see if parameters changes
+        await expect(getStats3Dmonth()).rejects.toBe(Error);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
@@ -185,35 +206,39 @@ describe("getStats3Dweek", () => {
     });
 
     test("correct getStats3Dweek DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/10/2024"
+        let DBdata=[
+            {year:'2023' ,month:'10' ,week:'1',counterN:'1',name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'2',name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'1',name:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'3',name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,week:'2',counterN:'1',name:'SPID', totalTickets:'26'},
+        ]
 
-        let data=[//time could be also the full data that is elaborated then in the server
-            {time:'week1',sevice:'s1',counter:'c1', count:'130'}, 
-            {time:'week1',sevice:'s1',counter:'c2', count:'54'}, 
-            {time:'week1', service:'s2',counter:'c1', count:'150'},
-            {time:'week1', service:'s2',counter:'c3', count:'34'},
+        let resultData=[
+            {year:'2023' ,month:'10' ,week:'1',counterN:'1',serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'2',serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'1',serviceName:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,week:'1',counterN:'3',serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,week:'2',counterN:'1',serviceName:'SPID', totalTickets:'26'},
         ]
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null, DBdata);
             return ({});
         });
 
-        await expect(getStats3Dweek(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats3Dweek()).resolves.toStrictEqual(resultData);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
     test("getStats3Dweek DAO - Error", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
             callback(Error);
             return ({});
         });
 
-        await expect(getStats3Dweek(startData, endData)).rejects.toBe(Error);     //see if parameters changes
+        await expect(getStats3Dweek()).rejects.toBe(Error);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
@@ -226,37 +251,39 @@ describe("getStats3Dday", () => {
     });
 
     test("correct getStats3Dday DAO", async () => {
-        let startData="10/10/2024";
-        let endData="11/10/2024"
+        let DBdata=[
+            {year:'2023' ,month:'10' ,day:'10',counterN:'1',name:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,day:'10',counterN:'2',name:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,day:'11',counterN:'1',name:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,day:'11',counterN:'3',name:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,day:'10',counterN:'1',name:'SPID', totalTickets:'26'},
+        ]
 
-        let data=[//time could be also the full data that is elaborated then in the server
-            {time:'10/10/2024',sevice:'s1',counter:'c1', count:'130'}, 
-            {time:'10/10/2024',sevice:'s1',counter:'c2', count:'54'}, 
-            {time:'10/10/2024', service:'s2',counter:'c1', count:'150'},
-            {time:'10/10/2024', service:'s2',counter:'c3', count:'34'},
-            {time:'11/10/2024', service:'s1', counter:'c2', count:'76'},
-            {time:'11/10/2021', service:'s3',counter:'c2', count:'29'},      
+        let resultData=[
+            {year:'2023' ,month:'10' ,day:'10',counterN:'1',serviceName:'servizio1', totalTickets:'99'},
+            {year:'2024' ,month:'10' ,day:'10',counterN:'2',serviceName:'SPID', totalTickets:'20'},
+            {year:'2024' ,month:'10' ,day:'11',counterN:'1',serviceName:'SPID', totalTickets:'31'},
+            {year:'2024' ,month:'10' ,day:'11',counterN:'3',serviceName:'servizio3', totalTickets:'7'},
+            {year:'2024' ,month:'11' ,day:'10',counterN:'1',serviceName:'SPID', totalTickets:'26'},
         ]
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
-            callback(null, data);
+            callback(null, DBdata);
             return ({});
         });
 
-        await expect(getStats3Dday(startData, endData)).resolves.toStrictEqual(data);     //see if parameters changes
+        await expect(getStats3Dday()).resolves.toStrictEqual(resultData);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
     test("getStats3Dday DAO - Error", async () => {
-        let startData="10/10/2024";
-        let endData="11/11/2024"
 
         jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
             callback(Error);
             return ({});
         });
 
-        await expect(getStats3Dday(startData, endData)).rejects.toBe(Error);     //see if parameters changes
+        await expect(getStats3Dday()).rejects.toBe(Error);     //see if parameters changes
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
