@@ -38,9 +38,8 @@ function App() {
     // salva in Done_ticket il ticket servito e cancella il ticket dalla coda
   }, []);
   */
-
-
-
+   // Tickat that are being served; struttura: {ticketNumber: lo setta chi chiama setServingTickets, counterNumber: lo setta chi chiama setServingTickets}
+   const [servingTickets, setServingTickets]= useState([]);
 
 
 
@@ -49,9 +48,9 @@ function App() {
       <Route path='/*' element={<AlertNotFound/>}/>
       <Route path='/' element={<Home/>}/>
       <Route path='/customer' element={<GetTicket/>}/>
-       <Route path='/customer/queue' element={<CallCustomer/>}/>
+      <Route path='/customer/queue' element={<CallCustomer servingTickets={servingTickets} />}/>
       <Route path='/manager' element={<Statistics/>}/>
-      <Route path='/officer' element={<Officer/>}/>
+      <Route path='/officer' element={<Officer setServingTickets={setServingTickets}/>}/>
     </Routes>
   )
 }
