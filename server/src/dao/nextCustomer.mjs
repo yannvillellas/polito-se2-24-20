@@ -56,15 +56,18 @@ export const getTicketInfo = (ticketNumber) => {
                 reject(err);
             } else {
                 console.log(rows);
-    
+                if(rows.length === 0) {
+                    resolve(null);
+                } else {
                 const ticketInfo = {
                     timeId : rows[0].timeId,
                     serviceId: rows[0].serviceId,
                     number: rows[0].number
                 };
+
                 resolve(ticketInfo);
                 
-            }
+            }}
         });
     });
 }
