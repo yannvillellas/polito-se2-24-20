@@ -11,7 +11,9 @@ import { insertInDone_Ticket } from './src/dao/nextCustomer.mjs';
 import dayjs from 'dayjs';
 
 import { getNextTicket, getTicketInfo } from './src/dao/nextCustomer.mjs';
-
+import {getAllCustomers} from './src/dao/callCustomerDAO.mjs';
+import {getServiceById} from './src/dao/serviceDAO.mjs';
+import {insertCallingTicket} from './src/dao/callCustomerDAO.mjs';
 
 const app = express();
 const port = 3001;
@@ -69,6 +71,33 @@ app.get('/api/NextCustomer', async (req, res) => {
 });
 
 
+app.get('/api/AllCustomers', async (req, res) => {
+    try {
+
+        const allCustomers = await getAllCustomers();
+        res.json(allCustomers);
+
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+
+});
+
+app.post('/api/saveCallingTicket', async (req, res) => {
+    try {
+        const serviceId = req.body.serviceId;
+        const serviceName = await getServiceById(serviceId);
+        const ticketNumber = req.body.number;
+        const actualCounter = req.body.actualCounter;
+
+        console.log("sono in saveCallingTicket, ecco i dati", serviceId, serviceName, ticketNumber, actualCounter);
+
+        await insertCallingTicket(serviceName, ticketNumber, actualCounter);
+        res.status(201).end();
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }).end();
+    }
+});
 
 
 

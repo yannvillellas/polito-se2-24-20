@@ -2,7 +2,7 @@ import ServiceAPI from "../../API/serviceAPI.mjs";
 
 import { useState, useEffect } from 'react';
 import { Container, Card, Row, Col, Table, Spinner} from 'react-bootstrap';
-
+import callCustomer from "../../API/callCustomer.mjs";
 
 
 function CallCustomer(props) {
@@ -21,6 +21,18 @@ function CallCustomer(props) {
         fetchServices()
     }, [])
 
+    const [customers, setCustomers] = useState([]);
+      
+    useEffect(() => {
+        // Polling 
+        const interval = setInterval(async () => {
+            const customers = await callCustomer.getAllCustomers();
+            console.log("sono in CallCustomer, ecco i customers", customers);
+            setCustomers(customers);
+            }, 5000); // Poll ogni 5 secondi
+        return () => clearInterval(interval); // Cleanup quando il componente viene smontato
+    }, []);
+    
 
 
     return (
@@ -39,7 +51,7 @@ function CallCustomer(props) {
                         </thead>
                         <tbody>
                                 
-                                {props.servingTickets.map((c) => <CallingRow calling={c} key={c.id}/>)}
+                                {customers.map((c) => <CallingRow calling={c} key={c.ticketNumber}/>)}
                         </tbody>
                     </Table>
                 </Col>
@@ -78,22 +90,21 @@ function CallCustomer(props) {
 
 function CallingRow(props){
     return(
-        /*
+        <>
         <tr>
             <td> 
                 {props.calling.ticketNumber} 
             </td>
 
             <td>
-                {props.calling.counterNumber}
+                {props.calling.courrierNumber}
             </td>
 
             <td>
                 <Spinner animation="grow" variant="success" /> 
             </td>
         </tr>
-        */
-       <p> {props.calling}</p>
+       </>
     )
 }
 

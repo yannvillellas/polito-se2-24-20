@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Container, Card, Row, Col, Table, Spinner, Button} from 'react-bootstrap';
 import nextCustomerAPI from '../../api/nextCustomerAPI';
+import callCustomer from '../../API/callCustomer.mjs';
 
 
-function Officer(props){
+function Officer(){
 
     const [actualCounter, setActualCounter] = useState(1);
     const [actualTicketNumber, setActualTicketNumber] = useState(null); // dove actual customer = actualTicket
@@ -15,24 +16,14 @@ function Officer(props){
             // salvo nel database Done_ticket:
             console.log("sono in NextCustomer.jsx, saveDoneTicket");
             nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter);
-            // cancello il ticket dalla coda
-            console.log("sono in Officer, dopo primo, ecco pre-modifica servingTickets",props.servingTickets);
-            props.setServingTickets((prep) => prep.filter((c) => c.number !== actualTicketNumber));
-            console.log("sono in Officer, ecco dopo primo, post-modifica servingTickets",props.servingTickets);
 
-        
         }
-
-        console.log("sono in NextCustomer.jsx, getNextCustomer");
         const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter);
-        console.log("sono in Officer, ecco il next customer che mi ha ritornato il server: ", nextCustomer);
-
-        // manda questo bigllietto a callCustomer (per la tabella di chiamata)
-        console.log("sono in Officer, ecco pre-aggiunta servingTickets",props.servingTickets);
-        props.setServingTickets((prep) => [...prep, {ticketNumber: nextCustomer, counterNumber: actualCounter}]);
-        console.log("sono in Officer, ecco post-aggiunta servingTickets",props.servingTickets);
-
-        
+        console.log("sono in NextCustomer.jsx, ecco il nextCustomer", nextCustomer);
+        // Lo salvo nel database ticket calling
+        console.log("sono in NextCustomer.jsx, saveCallingTicket");
+        callCustomer.saveCallingTicket(nextCustomer, actualCounter);
+        console.log("sono in NextCustomer.jsx, sono tornato da saveCallingTicket ");
         setActualTicketNumber(nextCustomer);
         
     }
