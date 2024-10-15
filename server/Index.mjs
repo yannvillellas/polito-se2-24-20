@@ -34,6 +34,12 @@ app.use(cors(corsOptions));
 
 app.post('/api/DoneTicket', async (req, res) => {
     try {
+
+        if(!req.body.number || !req.body.counter) {
+            return res.status(400).json({ error: "missing parameters" }).end();
+        }
+
+
         const ticketNumber = req.body.number;
         const counter = req.body.counter;
 
@@ -41,8 +47,10 @@ app.post('/api/DoneTicket', async (req, res) => {
             return res.status(400).json({ error: "missing parameters" }).end();
         }
 
-
+        console.log("sono in index, doneTicket, ecco i dati che mi sono arrivati: ", ticketNumber, counter);
         const ticketInfo = await getTicketInfo(ticketNumber);
+
+        console.log("sono in index, doneTicket, ecco i dati che mi ha ritornato getTicketInfo:", ticketInfo);
 
         if(!ticketInfo) {
             return res.status(404).json({ error: "ticket not found" }).end();
@@ -50,12 +58,13 @@ app.post('/api/DoneTicket', async (req, res) => {
     
 
         // non è stato inserito il ticket
-        await insertInDone_Ticket(ticketInfo, counter);
+        await insertInDone_Ticket(ticketInfo, counter); // Funziona
 
         // cancella da TICKET
         await deleteTicket(ticketNumber); // Funziona
+
         // cancella da callingTicket
-        await deleteFromCallingTicket(ticketNumber);
+        await deleteFromCallingTicket(ticketNumber); // Non funziona
 
         res.status(201).end();
 

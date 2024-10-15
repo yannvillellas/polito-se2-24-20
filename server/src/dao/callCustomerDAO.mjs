@@ -67,12 +67,17 @@ export const deleteFromCallingTicket = (ticketNumber) => {
             WHERE ticketNumber = ?
         `;
 
-        db.run(query, [ticketNumber], (err) => {
+        db.run(query, [ticketNumber], function(err) {
             if (err) {
-                console.error(err.message);
+                console.error("Error executing delete query:", err.message);
                 reject(err);
             } else {
-                resolve();
+                if (this.changes === 0) {
+                    console.warn(`No ticket found with ticketNumber: ${ticketNumber}`);
+                }
+                
+                console.log(`Deleted ticket with ticketNumber: ${ticketNumber}`);
+                resolve(this.changes);
             }
         });
     });

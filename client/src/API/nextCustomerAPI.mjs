@@ -2,8 +2,10 @@
 const SERVER_URL = 'http://localhost:3001'
 
 
-const saveDoneTicket = async (actualTicketNumber, actualCounter) => {
-    if(!actualTicketNumber || !actualCounter) return null;
+const saveDoneTicket = async (actualCustomerInfo, actualCounter) => {
+    if(!actualCustomerInfo || !actualCounter) return null;
+
+    console.log("sono in nextCustomerAPI, saveDoneTicket, sto mandando:", actualCustomerInfo, actualCounter);
 
     // Crea l'URL con il parametro actualTicket
     const url = new URL(`${SERVER_URL}/api/DoneTicket`);
@@ -12,7 +14,7 @@ const saveDoneTicket = async (actualTicketNumber, actualCounter) => {
     const response = await fetch(url, { 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({number: actualTicketNumber, counter: actualCounter}),
+        body: JSON.stringify({number: actualCustomerInfo.number, counter: actualCounter}),
     });
 
     // Controlla se la risposta è OK
