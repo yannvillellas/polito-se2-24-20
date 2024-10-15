@@ -14,10 +14,10 @@ function Officer(props){
         if(actualTicketNumber){
             // salvo nel database Done_ticket:
             console.log("sono in NextCustomer.jsx, saveDoneTicket");
-            await nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter);
+            nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter);
             // cancello il ticket dalla coda
             console.log("sono in Officer, dopo primo, ecco pre-modifica servingTickets",props.servingTickets);
-            await props.setServingTickets(() => props.servingTickets.filter((c) => c.number !== actualTicketNumber));
+            props.setServingTickets((prep) => prep.filter((c) => c.number !== actualTicketNumber));
             console.log("sono in Officer, ecco dopo primo, post-modifica servingTickets",props.servingTickets);
 
         
@@ -29,7 +29,7 @@ function Officer(props){
 
         // manda questo bigllietto a callCustomer (per la tabella di chiamata)
         console.log("sono in Officer, ecco pre-aggiunta servingTickets",props.servingTickets);
-        await props.setServingTickets(() => [...props.servingTickets, {ticketNumber: nextCustomer, counterNumber: actualCounter}]);
+        props.setServingTickets((prep) => [...prep, {ticketNumber: nextCustomer, counterNumber: actualCounter}]);
         console.log("sono in Officer, ecco post-aggiunta servingTickets",props.servingTickets);
 
         

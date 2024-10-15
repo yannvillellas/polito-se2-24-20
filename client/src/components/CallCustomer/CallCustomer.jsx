@@ -22,14 +22,6 @@ function CallCustomer(props) {
     }, [])
 
 
-    useEffect(()=>{
-        const callConsoleLog = async ()=>{
-            console.log("Sono in CallCustomer, ecco i services",services);
-        }
-        callConsoleLog();
-    }, [services])
-
-
 
     return (
 
