@@ -59,6 +59,7 @@ app.get('/api/NextCustomer', async (req, res) => {
 
         const counterN = req.query.counterN;
         const nextTicket = await getNextTicket(counterN);
+        console.log("sono in NextCustomer, ecco il ticket", nextTicket);
         res.json(nextTicket);
 
     } catch (error) {

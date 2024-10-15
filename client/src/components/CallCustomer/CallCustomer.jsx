@@ -86,19 +86,22 @@ function CallCustomer(props) {
 
 function CallingRow(props){
     return(
+        /*
         <tr>
             <td> 
-                {props.calling.ticket} 
+                {props.calling.ticketNumber} 
             </td>
 
             <td>
-                {props.calling.currier}
+                {props.calling.counterNumber}
             </td>
 
             <td>
                 <Spinner animation="grow" variant="success" /> 
             </td>
         </tr>
+        */
+       <p> {props.calling}</p>
     )
 }
 

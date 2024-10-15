@@ -40,7 +40,7 @@ function App() {
   */
    // Tickat that are being served; struttura: {ticketNumber: lo setta chi chiama setServingTickets, counterNumber: lo setta chi chiama setServingTickets}
    const [servingTickets, setServingTickets]= useState([]);
-
+   console.log("sono in App.jsx, ecco i servingTickets", servingTickets);
 
 
   return (
@@ -50,7 +50,7 @@ function App() {
       <Route path='/customer' element={<GetTicket/>}/>
       <Route path='/customer/queue' element={<CallCustomer servingTickets={servingTickets} />}/>
       <Route path='/manager' element={<Statistics/>}/>
-      <Route path='/officer' element={<Officer setServingTickets={setServingTickets}/>}/>
+      <Route path='/officer' element={<Officer servingTickets = {servingTickets} setServingTickets={setServingTickets}/>}/>
     </Routes>
   )
 }

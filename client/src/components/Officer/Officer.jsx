@@ -16,17 +16,22 @@ function Officer(props){
             console.log("sono in NextCustomer.jsx, saveDoneTicket");
             await nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter);
             // cancello il ticket dalla coda
-            props.setServingTickets((prev) => prev.filter((c) => c.number !== actualTicketNumber));
+            console.log("sono in Officer, dopo primo, ecco pre-modifica servingTickets",props.servingTickets);
+            await props.setServingTickets(() => props.servingTickets.filter((c) => c.number !== actualTicketNumber));
+            console.log("sono in Officer, ecco dopo primo, post-modifica servingTickets",props.servingTickets);
+
         
         }
 
         console.log("sono in NextCustomer.jsx, getNextCustomer");
         const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter);
-        console.log(nextCustomer);
+        console.log("sono in Officer, ecco il next customer che mi ha ritornato il server: ", nextCustomer);
 
         // manda questo bigllietto a callCustomer (per la tabella di chiamata)
-        props.setServingTickets((prev) => [...prev, {ticketNumber: nextCustomer, counterNumber: actualCounter}]);
-        console.log("sono in NextCustomer.jsx, setActualTicketNumber" );
+        console.log("sono in Officer, ecco pre-aggiunta servingTickets",props.servingTickets);
+        await props.setServingTickets(() => [...props.servingTickets, {ticketNumber: nextCustomer, counterNumber: actualCounter}]);
+        console.log("sono in Officer, ecco post-aggiunta servingTickets",props.servingTickets);
+
         
         setActualTicketNumber(nextCustomer);
         

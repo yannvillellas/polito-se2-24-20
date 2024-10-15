@@ -40,6 +40,7 @@ const getNextCustomer = async (counterN) => {
     // Controlla se la risposta è OK
     if (response.ok) {
         const statsJson = await response.json(); // Ottieni i dati in formato JSON
+        console.log("sono in nextCustomerAPI, ecco i dati del nextCustomer che mi ha ritornato il server!", statsJson);
         return statsJson; // Restituisci i dati
     } else {
         throw new Error('Error to retrieve statistics from the server'); // Gestisci gli errori
