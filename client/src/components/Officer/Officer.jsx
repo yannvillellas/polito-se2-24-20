@@ -9,25 +9,24 @@ function Officer(){
     const [actualCounter, setActualCounter] = useState(1);
     const [actualCustomerInfo, setActualCustomerInfo] = useState(null); // dove actual customer = actualTicket
 
-    const handleClick = async () => {
+    const [hasTickets, setHasTickets] = useState(true); // Stato per la disponibilità dei ticket
 
-        if(actualCustomerInfo){
-            // Se prima c'era un ticket chiamato, lo salvo come servito
-            await nextCustomerAPI.saveDoneTicket(actualCustomerInfo, actualCounter); //  Sembra funzionare ,mancaava await
-            // deleteFromCallingTicket(actualCustomerInfo.number); 
+    const handleClick = async () => {
+        if (actualCustomerInfo) {
+            await nextCustomerAPI.saveDoneTicket(actualCustomerInfo, actualCounter);
         }
 
-        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter); // Funziona: il nextCustomer è: {serviceId: 1, number: 1}
+        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter);
 
-        console.log("Sono in Officer, handleClick, ecco il nextCustomer", nextCustomer);
-
-        
-        // Lo salvo nel database ticket calling
-        callCustomer.saveCallingTicket(nextCustomer, actualCounter); // Funziona!
-        setActualCustomerInfo(nextCustomer);
-        
-        
-    }
+        if (nextCustomer) {
+            console.log("Sono in Officer, handleClick, ecco il nextCustomer", nextCustomer);
+            callCustomer.saveCallingTicket(nextCustomer, actualCounter);
+            setActualCustomerInfo(nextCustomer);
+        } else {
+            // Se non ci sono più ticket, disabilitiamo il pulsante
+            setHasTickets(false);
+        }
+    };
 
     return(<>
         <Container>
