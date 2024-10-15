@@ -37,7 +37,7 @@ function Officer(){
                         <Card.Body>
                             <Card.Title>Counter {actualCounter} </Card.Title>
                             <Card.Text>
-                                {actualCustomerInfo ? actualCustomerInfo.number : "No customer called yet"}
+                                <strong>Actual customer:  </strong>{actualCustomerInfo ? actualCustomerInfo.number: "No customer called yet"}
                             </Card.Text>
                         </Card.Body>
                     </Card>
@@ -46,7 +46,7 @@ function Officer(){
 
             <Row>
                 <Col>
-                    <Button onClick={handleClick}> Call Next customer! </Button>
+                    {hasTickets ? <Button onClick={handleClick}> Call Next customer! </Button> : <p>No more customers!</p>}
                 </Col>
             </Row>
 

@@ -91,7 +91,7 @@ app.get('/api/NextCustomer', async (req, res) => {
         const nextTicket = await getNextTicket(counterN); // mi restituisce: ticketNumber e serviceId
 
         if(!nextTicket) {
-            return res.status(404).json(null).end();
+            return res.json(null).end();
         }
 
         res.json(nextTicket);
