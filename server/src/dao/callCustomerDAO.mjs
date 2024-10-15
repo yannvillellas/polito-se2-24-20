@@ -72,7 +72,6 @@ export const deleteFromCallingTicket = (ticketNumber) => {
                 console.error(err.message);
                 reject(err);
             } else {
-                console.log(`Row with ticketNumber ${ticketNumber} deleted`);
                 resolve();
             }
         });

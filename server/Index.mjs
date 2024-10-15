@@ -36,20 +36,25 @@ app.post('/api/DoneTicket', async (req, res) => {
     try {
         const ticketNumber = req.body.number;
         const counter = req.body.counter;
+
+        if(!ticketNumber || !counter) {
+            return res.status(400).json({ error: "missing parameters" }).end();
+        }
+
+
         const ticketInfo = await getTicketInfo(ticketNumber);
 
+        if(!ticketInfo) {
+            return res.status(404).json({ error: "ticket not found" }).end();
+        }
     
-
-        console.log("sono appena uscito da getTicketInfo", ticketInfo);
 
         // non è stato inserito il ticket
         await insertInDone_Ticket(ticketInfo, counter);
-        console.log("sono in doneTicket, ho finito");
 
         // cancella da TICKET
-        await deleteTicket(ticketNumber);
+        await deleteTicket(ticketNumber); // Funziona
         // cancella da callingTicket
-        console.log("sto per cancellare da callingTicket", ticketNumber);
         await deleteFromCallingTicket(ticketNumber);
 
         res.status(201).end();
@@ -67,9 +72,17 @@ app.post('/api/DoneTicket', async (req, res) => {
 app.get('/api/NextCustomer', async (req, res) => {
     try {
 
+        if (!req.query.counterN) {
+            return res.status(400).json({ error: "missing parameters" }).end();
+        }
+
         const counterN = req.query.counterN;
-        const nextTicket = await getNextTicket(counterN);
-        console.log("sono in NextCustomer, ecco il ticket", nextTicket);
+        const nextTicket = await getNextTicket(counterN); // mi restituisce: ticketNumber e serviceId
+
+        if(!nextTicket) {
+            return res.status(404).json({ error: "no ticket to serve" }).end();
+        }
+
         res.json(nextTicket);
 
     } catch (error) {
@@ -93,12 +106,19 @@ app.get('/api/AllCustomers', async (req, res) => {
 
 app.post('/api/saveCallingTicket', async (req, res) => {
     try {
+
+        if (!req.body.number || !req.body.serviceId || !req.body.actualCounter) {
+            return res.status(400).json({ error: "missing parameters" }).end();
+        }
+
         const serviceId = req.body.serviceId;
+        console.log("sono in index, saveCallingTicket, ecco il serviceId", serviceId);
         const serviceName = await getServiceById(serviceId);
+        console.log("sono in index, saveCallingTicket, ecco il serviceName:", serviceName);
         const ticketNumber = req.body.number;
         const actualCounter = req.body.actualCounter;
 
-        console.log("sono in saveCallingTicket, ecco i dati", serviceId, serviceName, ticketNumber, actualCounter);
+        console.log("sono in saveCallingTicket, ecco i dati che sto per inserire in CallingTicekt:", serviceId, serviceName, ticketNumber, actualCounter);
 
         await insertCallingTicket(serviceName, ticketNumber, actualCounter);
         res.status(201).end();

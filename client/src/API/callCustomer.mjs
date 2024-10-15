@@ -26,7 +26,12 @@ const getAllCustomers = async (counterN) => {
 
 // HTTP POST per getAllCustomers
 const saveCallingTicket = async (nextTicket, actualCounter) => {
-    console.log("sono in nextCustomerAPI, sto mandando", nextTicket);
+    console.log("sono in nextCustomerAPI, saveCalingTicket, sto mandando", nextTicket);
+
+    if(!nextTicket || !actualCounter) return null;
+
+
+
     // Crea l'URL con il parametro counterN
     const url = new URL(`${SERVER_URL}/api/saveCallingTicket`);
     
@@ -34,7 +39,7 @@ const saveCallingTicket = async (nextTicket, actualCounter) => {
     const response = await fetch(url, { 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({serviceId: nextTicket.serviceId, number: nextTicket.number, actualCounter: actualCounter}),
+        body: JSON.stringify({number: nextTicket.number, serviceId: nextTicket.serviceId, actualCounter: actualCounter}),
     });
 
     // Controlla se la risposta è OK

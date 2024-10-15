@@ -7,25 +7,24 @@ import callCustomer from '../../API/callCustomer.mjs';
 function Officer(){
 
     const [actualCounter, setActualCounter] = useState(1);
-    const [actualTicketNumber, setActualTicketNumber] = useState(null); // dove actual customer = actualTicket
+    const [actualCustomerInfo, setActualCustomerInfo] = useState(null); // dove actual customer = actualTicket
 
     const handleClick = async () => {
-        console.log("sono in NextCustomer.jsx");
 
-        if(actualTicketNumber){
-            // salvo nel database Done_ticket:
-            console.log("sono in NextCustomer.jsx, saveDoneTicket");
-            nextCustomerAPI.saveDoneTicket(actualTicketNumber, actualCounter); //  DA testare 2
-
+        if(actualCustomerInfo){
+            // Se prima c'era un ticket chiamato, lo salvo come servito
+            nextCustomerAPI.saveDoneTicket(actualCustomerInfo, actualCounter); //  DA testare 2
         }
 
-        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter); // Da testare 1
-        console.log("sono in NextCustomer.jsx, ecco il nextCustomer", nextCustomer);
+        const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter); // Funziona: il nextCustomer è: {serviceId: 1, number: 1}
+
+        console.log("Sono in Officer, handleClick, ecco il nextCustomer", nextCustomer);
+
+        
         // Lo salvo nel database ticket calling
-        console.log("sono in NextCustomer.jsx, saveCallingTicket");
-        callCustomer.saveCallingTicket(nextCustomer, actualCounter); // Da testare 3
-        console.log("sono in NextCustomer.jsx, sono tornato da saveCallingTicket ");
-        setActualTicketNumber(nextCustomer);
+        callCustomer.saveCallingTicket(nextCustomer, actualCounter); // Funziona!
+        setActualCustomerInfo(nextCustomer);
+        
         
     }
 
@@ -38,7 +37,7 @@ function Officer(){
                         <Card.Body>
                             <Card.Title>Counter {actualCounter} </Card.Title>
                             <Card.Text>
-                                {actualTicketNumber ? actualTicketNumber.number : "No customer called yet"}
+                                {actualCustomerInfo ? actualCustomerInfo.number : "No customer called yet"}
                             </Card.Text>
                         </Card.Body>
                     </Card>

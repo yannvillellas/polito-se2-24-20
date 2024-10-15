@@ -29,8 +29,8 @@ export const getNextTicket= (counterNumber) => {
                 resolve(null); // Non ci sono ticket da servire
             } else {
                 const nextTicket = {
-                    serviceId: rows[0].serviceId,
                     number: rows[0].number,
+                    serviceId: rows[0].serviceId, // mi serve per ricavarmi poi il serviceName quando lo salvo in DOne_Ticket
                 };
 
                 resolve(nextTicket);
@@ -55,7 +55,6 @@ export const getTicketInfo = (ticketNumber) => {
                 console.error(err.message);
                 reject(err);
             } else {
-                console.log(rows);
                 if(rows.length === 0) {
                     resolve(null);
                 } else {
@@ -89,7 +88,6 @@ export const insertInDone_Ticket = (ticketInfo, counter) => {
             
             if (this.changes === 0) {
                 // Nessuna riga aggiornata, quindi inseriamo un nuovo record
-                console.log("sono in inserInDone_Ticket, non ho trovato il ticket, lo inserisco");
                 const insertSql = `
                     INSERT INTO Done_Ticket (timeId, serviceId, counterN, numberTicketServed) 
                     VALUES (?, ?, ?, 1)
@@ -108,3 +106,4 @@ export const insertInDone_Ticket = (ticketInfo, counter) => {
         });
     });
 }
+
