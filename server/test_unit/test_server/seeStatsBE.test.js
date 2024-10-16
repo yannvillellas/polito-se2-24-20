@@ -2,7 +2,6 @@
 import { test, expect, jest, afterEach } from "@jest/globals"
 import request from 'supertest'
 import express from "express"
-//import { app, server } from "../../Index.mjs"
 import app from "../../Index.mjs";
 import { getStats2Dmonth, getStats2Dweek, getStats2Dday, getStats3Dmonth, getStats3Dweek, getStats3Dday } from '../../src/dao/statsDAO.mjs';
 
@@ -16,10 +15,6 @@ describe("Server routes tests", () => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
-
-    /*afterEach((done) => {
-        //server.close(done);
-    })*/
 
     /* ************************ /api/Stats2Dmonth ************************* */
     describe("/api/Stats2Dmonth", () => {

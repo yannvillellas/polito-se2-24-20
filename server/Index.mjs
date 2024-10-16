@@ -237,7 +237,10 @@ app.get('/api/counter-services/counters/:serviceId', [
     check('serviceId').notEmpty().isNumeric()
 ], async (req, res) => {
     try {
-
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
         const counterNumbers = await getNumberOfCountersForService(req.params.serviceId);
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json(counterNumbers).end();
