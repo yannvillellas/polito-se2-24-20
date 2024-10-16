@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Container, Card, Row, Col, Table, Spinner, Button} from 'react-bootstrap';
 import nextCustomerAPI from '../../api/nextCustomerAPI';
 import callCustomer from '../../API/callCustomer.mjs';
-import ServerAPI from '../../API/serviceAPI.mjs';
 
 function Officer(){
 
@@ -21,8 +20,10 @@ function Officer(){
         if (nextCustomer) {
             console.log("Sono in Officer, handleClick, ecco il nextCustomer", nextCustomer);
             callCustomer.saveCallingTicket(nextCustomer, actualCounter);
+            
             // aggiorno la coda in service:
-            await ServerAPI.updateServiceNumberInQueue(nextCustomer.serviceId);
+            await callCustomer.updateServiceNumberInQueue(nextCustomer.serviceId); // Non funziona
+            
             setActualCustomerInfo(nextCustomer);
         } else {
             // Se non ci sono più ticket, disabilitiamo il pulsante

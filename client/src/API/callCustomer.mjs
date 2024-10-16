@@ -52,5 +52,26 @@ const saveCallingTicket = async (nextTicket, actualCounter) => {
 };
 
 
+// HTTP PUT per updateServiceNumberInQueue
+const updateServiceNumberInQueue = async (serviceId) => {
+    console.log("Invio richiesta per aggiornare il numero di clienti in coda per quel servizio:", serviceId);
 
-export default {getAllCustomers, saveCallingTicket} 
+    if(!serviceId) return null;
+
+    const response = await fetch(`${SERVER_URL}/service/queue`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify({serviceId: serviceId}),
+      });
+    
+      if(!response.ok) {
+        const errMessage = await response.json();
+        throw errMessage;
+      }
+      else return null;
+};
+
+
+
+
+export default {getAllCustomers, saveCallingTicket, updateServiceNumberInQueue} 

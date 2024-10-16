@@ -139,8 +139,8 @@ app.post('/api/saveCallingTicket', async (req, res) => {
 });
 
 
-app.put('/api/service/queue', async (req, res) => {
-    const serviceId = req.body;
+app.put('/service/queue', async (req, res) => {
+    const serviceId = req.body.serviceId;
     console.log("sono in index, updateServiceNumberInQueue, ecco il serviceId", serviceId);
     if (!serviceId) {
         return res.status(400).json({ error: 'serviceId is required' });

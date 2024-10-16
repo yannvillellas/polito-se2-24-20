@@ -20,21 +20,7 @@ function handleInvalidResponse(response) {
     return response;
 }
 
-// HTTP PUT per updateServiceNumberInQueue
-const updateServiceNumberInQueue = async (serviceId) => {
-    console.log("Invio richiesta per aggiornare il numero di clienti in coda per quel servizio:", serviceId);
-    const response = await fetch(`${SERVER_URL}queue`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify({serviceId: serviceId}),
-      });
-    
-      if(!response.ok) {
-        const errMessage = await response.json();
-        throw errMessage;
-      }
-      else return null;
-};
+
 
 
 
@@ -52,7 +38,6 @@ const updateServiceNumberInQueue = async (serviceId) => {
 
 const ServerAPI = {
     getServices,
-    updateServiceNumberInQueue
 }
 
 export default ServerAPI;
