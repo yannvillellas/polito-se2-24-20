@@ -3,151 +3,151 @@ import sqlite3 from 'sqlite3';
 const { Database } = sqlite3.verbose();
 import { getNextTicket, getTicketInfo, insertInDone_Ticket } from "../../src/dao/nextCustomer.mjs";
 
-// Mock database setup
-jest.mock('../database/db.mjs', () => ({
-    db: new Database(':memory:')
-}));
 
 describe("getNextTicket", () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correctly retrieves the next ticket for the counter", async () => {
-        const mockData = [
-            { serviceId: 1, numberinQueue: 10, serviceTime: 20, number: 100 }
+    test("should return the next ticket when available", async () => {
+        // Mock database response for getNextTicket
+        const mockRows = [
+            { serviceId: 1, numberinQueue: 10, serviceTime: 15, number: 101 }
         ];
 
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(null, mockData);  // simulate successful database query
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(null, mockRows);
+            return {};
         });
 
-        const result = await getNextTicket(1);
+        const counterNumber = 1;
+        const expectedTicket = { number: 101, serviceId: 1 };
 
-        expect(result).toEqual({
-            number: 100,
-            serviceId: 1
-        });
-
+        await expect(getNextTicket(counterNumber)).resolves.toStrictEqual(expectedTicket);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("handles no tickets available", async () => {
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(null, []);  // simulate no rows returned
+    test("should return null if no tickets are available", async () => {
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(null, []);
+            return {};
         });
 
-        const result = await getNextTicket(1);
-
-        expect(result).toBeNull();  // no tickets available
+        const counterNumber = 1;
+        await expect(getNextTicket(counterNumber)).resolves.toBeNull();
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("handles database error", async () => {
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(new Error("DB error"));  // simulate error
+    test("should reject with error if the query fails", async () => {
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(new Error("Database error"));
+            return {};
         });
 
-        await expect(getNextTicket(1)).rejects.toThrow("DB error");
+        const counterNumber = 1;
+        await expect(getNextTicket(counterNumber)).rejects.toThrow("Database error");
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
 
-describe("getTicketInfo", () => {
 
+describe("getTicketInfo", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correctly retrieves ticket information", async () => {
-        const mockData = [
-            { timeId: 1, serviceId: 2, number: 100 }
+    test("should return ticket info for a valid ticket number", async () => {
+        const mockRows = [
+            { timeId: 1, serviceId: 2, number: 101 }
         ];
 
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(null, mockData);  // simulate successful database query
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(null, mockRows);
+            return {};
         });
 
-        const result = await getTicketInfo(100);
+        const ticketNumber = 101;
+        const expectedTicketInfo = { timeId: 1, serviceId: 2, number: 101 };
 
-        expect(result).toEqual({
-            timeId: 1,
-            serviceId: 2,
-            number: 100
-        });
-
+        await expect(getTicketInfo(ticketNumber)).resolves.toStrictEqual(expectedTicketInfo);
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("handles no ticket found", async () => {
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(null, []);  // simulate no rows returned
+    test("should return null if no ticket is found", async () => {
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(null, []);
+            return {};
         });
 
-        const result = await getTicketInfo(100);
-
-        expect(result).toBeNull();  // no ticket found
+        const ticketNumber = 101;
+        await expect(getTicketInfo(ticketNumber)).resolves.toBeNull();
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 
-    test("handles database error", async () => {
-        jest.spyOn(Database.prototype, 'all').mockImplementation((query, params, callback) => {
-            callback(new Error("DB error"));  // simulate error
+    test("should reject with error if the query fails", async () => {
+        jest.spyOn(Database.prototype, "all").mockImplementation((sql, params, callback) => {
+            callback(new Error("Database error"));
+            return {};
         });
 
-        await expect(getTicketInfo(100)).rejects.toThrow("DB error");
+        const ticketNumber = 101;
+        await expect(getTicketInfo(ticketNumber)).rejects.toThrow("Database error");
         expect(Database.prototype.all).toHaveBeenCalledTimes(1);
     });
 });
 
 describe("insertInDone_Ticket", () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
         jest.resetAllMocks();
     });
 
-    test("correctly updates done_ticket with existing record", async () => {
-        const mockTicketInfo = { timeId: 1, serviceId: 2, number: 100 };
+    test("should update existing record in Done_Ticket if found", async () => {
+        const ticketInfo = { timeId: 1, serviceId: 2, number: 101 };
+        const counter = 1;
 
-        jest.spyOn(Database.prototype, 'run').mockImplementation((query, params, callback) => {
-            callback(null, { changes: 1 });  // simulate successful update
+        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
+            callback(null);
+            return { changes: 1 };  // Simulate that an update happened
         });
 
-        const result = await insertInDone_Ticket(mockTicketInfo, 1);
-
-        expect(result).toEqual(1);  // 1 row updated
+        await expect(insertInDone_Ticket(ticketInfo, counter)).resolves.toBe(1);
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 
-    test("inserts new record when no existing entry", async () => {
-        const mockTicketInfo = { timeId: 1, serviceId: 2, number: 100 };
+    test("should insert a new record in Done_Ticket if no update happens", async () => {
+        const ticketInfo = { timeId: 1, serviceId: 2, number: 101 };
+        const counter = 1;
 
-        jest.spyOn(Database.prototype, 'run')
-            .mockImplementationOnce((query, params, callback) => {
-                callback(null, { changes: 0 });  // simulate no update
-            })
-            .mockImplementationOnce((query, params, callback) => {
-                callback(null, { lastID: 1 });  // simulate successful insert
-            });
+        // First call to `run` simulates no changes (no update)
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return { changes: 0 };  // Simulate that no update happened
+        });
 
-        const result = await insertInDone_Ticket(mockTicketInfo, 1);
+        // Second call to `run` simulates the insert
+        jest.spyOn(Database.prototype, "run").mockImplementationOnce((sql, params, callback) => {
+            callback(null);
+            return { lastID: 123 };  // Simulate successful insert
+        });
 
-        expect(result).toEqual(1);  // inserted new row
+        await expect(insertInDone_Ticket(ticketInfo, counter)).resolves.toBe(123);
         expect(Database.prototype.run).toHaveBeenCalledTimes(2);
     });
 
-    test("handles database error during update", async () => {
-        const mockTicketInfo = { timeId: 1, serviceId: 2, number: 100 };
+    test("should reject with error if the update fails", async () => {
+        const ticketInfo = { timeId: 1, serviceId: 2, number: 101 };
+        const counter = 1;
 
-        jest.spyOn(Database.prototype, 'run').mockImplementation((query, params, callback) => {
-            callback(new Error("DB error"));  // simulate error
+        jest.spyOn(Database.prototype, "run").mockImplementation((sql, params, callback) => {
+            callback(new Error("Update failed"));
         });
 
-        await expect(insertInDone_Ticket(mockTicketInfo, 1)).rejects.toThrow("DB error");
+        await expect(insertInDone_Ticket(ticketInfo, counter)).rejects.toThrow("Update failed");
         expect(Database.prototype.run).toHaveBeenCalledTimes(1);
     });
 });
+
+
