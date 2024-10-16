@@ -11,7 +11,7 @@ export const insertTicket = (number, esimatedTime, serviceId, timeId) =>{
                 reject(err);
             }
 
-            resolve(number);
+            resolve(newNumber);
         } )
     });
 };
