@@ -6,10 +6,12 @@ import app from "../../Index.mjs";
 import { getNumberOfServicesForCounter, getNumberOfCountersForService } from "../../src/dao/counterServicesDao.mjs";
 import { getTodayTimeId, insertTime } from "../../src/dao/timeDAO.mjs";
 import { getServices } from "../../src/dao/serviceDAO.mjs";
+import { getLastNumber, insertTicket } from "../../src/dao/ticketDAO.mjs";
 
 jest.mock("../../src/dao/counterServicesDao.mjs");
 jest.mock("../../src/dao/timeDAO.mjs");
 jest.mock("../../src/dao/serviceDAO.mjs");
+jest.mock("../../src/dao/ticketDAO.mjs");
 
 
 
@@ -142,22 +144,97 @@ describe("Server routes tests", () => {
                 { id: 2, name: 'Service 2' },
             ];
             getServices.mockResolvedValue(mockServices);
-    
+
             const res = await request(app).get('/api/service');
-    
+
             expect(res.status).toBe(200);
             expect(getServices).toHaveBeenCalled();
             expect(res.body).toEqual(mockServices);
         });
-    
+
         it('should return 500 if there is an internal error', async () => {
             getServices.mockRejectedValue(new Error('Database error'));
-    
+
             const res = await request(app).get('/api/service');
-    
+
             expect(res.status).toBe(500);
             expect(res.body.error).toBe('Internal Server Error');
         });
     });
 
+    /* ************************ '/api/counter-services/services/:counterN' ************************* */
+    describe("/api/ticket/last-number", () => {
+
+        it('should return 200 and the last ticket number', async () => {
+            const mockLastNumber = { lastNumber: 50 };
+            getLastNumber.mockResolvedValue(mockLastNumber);
+
+            const res = await request(app).get('/api/ticket/last-number');
+
+            expect(res.status).toBe(200);
+            expect(getLastNumber).toHaveBeenCalled();
+            expect(res.body).toEqual(mockLastNumber);
+        });
+
+        it('should return 500 if there is an internal error', async () => {
+            getLastNumber.mockRejectedValue(new Error('Database error'));
+
+            const res = await request(app).get('/api/ticket/last-number');
+
+            expect(res.status).toBe(500);
+            expect(res.body.error).toBe('Internal Server Error');
+        });
+    });
+
+    describe("/api/ticket", () => {
+        it('should return 200 and the ticket number when input is valid', async () => {
+            const mockTicketNumber = { ticketNumber: 100 }; 
+            insertTicket.mockResolvedValue(mockTicketNumber);
+    
+            const validData = {
+                number: 50,
+                esimatedTime: 30,
+                serviceId: 2,
+                timeId: 1
+            };
+    
+            const res = await request(app).post('/api/ticket').send(validData);
+    
+            expect(res.status).toBe(200);
+            expect(insertTicket).toHaveBeenCalledWith(50, 30, 2, 1);
+            expect(res.body).toEqual(mockTicketNumber); 
+        });
+       
+        it('should return 422 if input validation fails', async () => {
+            const invalidData = {
+                number: -1, 
+                esimatedTime: 'invalid',
+                serviceId: null, 
+                timeId: -5 
+            };
+    
+            const res = await request(app).post('/api/ticket').send(invalidData);
+    
+            expect(res.status).toBe(422);
+            expect(res.body.errors).toBeInstanceOf(Array);
+            expect(res.body.errors.length).toBeGreaterThan(0);
+        });
+    
+        // Test errore del server
+        it('should return 500 if there is an internal error', async () => {
+            const validData = {
+                number: 50,
+                esimatedTime: 30,
+                serviceId: 2,
+                timeId: 1
+            };
+    
+            insertTicket.mockRejectedValue(new Error('Database error')); 
+    
+            const res = await request(app).post('/api/ticket').send(validData);
+    
+            expect(res.status).toBe(500); 
+            expect(res.body.error).toBe('Internal Server Error');
+        });
+    });
 });
