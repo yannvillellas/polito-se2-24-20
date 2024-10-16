@@ -11,14 +11,26 @@ function CallCustomer(props) {
 
 
     const [services, setServices] = useState([]);
+
+
+    // Per velocizzare il caricamento di services, lo carico una volta sola all'inizio
     useEffect(()=>{
+        const fetchServices = async () => {
+            const listServices = await ServiceAPI.getServices();
+            setServices(listServices);
+        };
+        fetchServices();
+    }, []);
+    // E poin ne facico il polling per agigornare la la coda
+    useEffect(()=>{
+
         const interval = setInterval(async () => {
         
             const listServices = await ServiceAPI.getServices();
             setServices(listServices);
     
             return () => clearInterval(interval); // Cleanup quando il componente viene smontato
-        }, 5000); // Poll ogni 5 secondi
+        }, 1000); // Poll ogni 5 secondi
     }, [])
 
     const [customers, setCustomers] = useState([]);
@@ -30,7 +42,7 @@ function CallCustomer(props) {
             const customers = await callCustomer.getAllCustomers();
             setCustomers(customers);
 
-            }, 5000); // Poll ogni 5 secondi
+            }, 1000); // Poll ogni 5 secondi
         return () => clearInterval(interval); // Cleanup quando il componente viene smontato
     }, []);
     
