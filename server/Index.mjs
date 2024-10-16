@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
     optionsSuccessStatus: 200,
 };
 
@@ -136,12 +136,13 @@ app.post('/api/saveCallingTicket', async (req, res) => {
 
 app.put('/service/queue', async (req, res) => {
     const serviceId = req.body.serviceId;
-    if (!serviceId) {
+    const number = req.body.number;
+    if (!serviceId || !number) {
         return res.status(400).json({ error: 'serviceId is required' });
     }
 
-    
-    const success =  await updateServiceNumberInQueue(serviceId);
+    console.log("serviceI: ", serviceId)
+    const success =  await updateServiceNumberInQueue(serviceId, number);
 
     if (success) {
         return res.status(200).json({ message: 'Service number updated successfully' });
@@ -182,8 +183,9 @@ app.post('/api/ticket', [
         const esimatedTime = req.body.esimatedTime;
         const serviceId = req.body.serviceId;
         const timeId = req.body.timeId;
-
+        console.log('number:', number)
         const ticketNumber = await insertTicket(number, esimatedTime, serviceId, timeId);
+        console.log('ticketNumber:', ticketNumber)
         return res.status(200).json(ticketNumber).end();
     } catch (error) {
         console.error('Error in ticket creation:', error);

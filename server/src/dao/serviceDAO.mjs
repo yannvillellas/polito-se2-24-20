@@ -37,12 +37,12 @@ export const getServiceById = (serviceId)=>{
 }
 
 
-export const updateServiceNumberInQueue = (serviceId) => {
+export const updateServiceNumberInQueue = (serviceId, number) => {
     console.log("sono in serviceDAO, updateServiceNumberInQueue, sto mandando", serviceId);
     return new Promise((resolve, reject) => {
-        const updateServiceNumberInQueueQuery = `UPDATE Service SET numberInQueue = numberInQueue + 1 WHERE serviceId = ?`;
+        const updateServiceNumberInQueueQuery = `UPDATE Service SET numberInQueue = numberInQueue + ? WHERE serviceId = ?`;
         
-        db.run(updateServiceNumberInQueueQuery, [serviceId], function(err) {
+        db.run(updateServiceNumberInQueueQuery, [number, serviceId], function(err) {
             if (err) {
                 console.log("Errore nell'aggiornamento del numero di clienti in coda per quel servizio", err);
                 reject(err);

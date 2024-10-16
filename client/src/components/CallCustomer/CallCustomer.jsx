@@ -8,18 +8,29 @@ import callCustomer from "../../API/callCustomer.mjs";
 function CallCustomer(props) {
 
 // La lista dei ticket da chiamare e i rispettivi #Currier arrivano dalla "story 2".
-    console.log("Sono in CallCustomer, ecco i servingTickets",props.servingTickets);
 
 
     const [services, setServices] = useState([]);
+
+
+    // Per velocizzare il caricamento di services, lo carico una volta sola all'inizio
     useEffect(()=>{
+        const fetchServices = async () => {
+            const listServices = await ServiceAPI.getServices();
+            setServices(listServices);
+        };
+        fetchServices();
+    }, []);
+    // E poin ne facico il polling per agigornare la la coda
+    useEffect(()=>{
+
         const interval = setInterval(async () => {
         
             const listServices = await ServiceAPI.getServices();
             setServices(listServices);
     
             return () => clearInterval(interval); // Cleanup quando il componente viene smontato
-        }, 5000); // Poll ogni 5 secondi
+        }, 1000); // Poll ogni 5 secondi
     }, [])
 
     const [customers, setCustomers] = useState([]);
@@ -29,10 +40,9 @@ function CallCustomer(props) {
         const interval = setInterval(async () => {
             
             const customers = await callCustomer.getAllCustomers();
-            console.log("sono in CallCustomer, ecco i customers", customers);
             setCustomers(customers);
 
-            }, 5000); // Poll ogni 5 secondi
+            }, 1000); // Poll ogni 5 secondi
         return () => clearInterval(interval); // Cleanup quando il componente viene smontato
     }, []);
     

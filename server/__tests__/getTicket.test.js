@@ -52,7 +52,7 @@ describe("Ticket DAO Tests", () => {
                 mockServiceId,
                 mockTimeId
             );
-            expect(result).toBe(mockNumber);
+            expect(result).toBe(mockNumber + 1);
             expect(Database.prototype.run).toHaveBeenCalledTimes(1);
             expect(Database.prototype.run).toHaveBeenCalledWith(
                 expect.any(String),

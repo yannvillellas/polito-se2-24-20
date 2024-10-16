@@ -4,6 +4,7 @@ import TicketAPI from "../../API/ticketAPI.mjs";
 import ServiceAPI from "../../API/serviceAPI.mjs";
 import TimeAPI from "../../API/TimeAPI.mjs";
 import CounterServicesAPI from "../../API/CounterSarvicesAPI.mjs";
+import callCustomer from "../../API/callCustomer.mjs";
 import { useNavigate } from "react-router-dom";
 import './getTicket.css';
 
@@ -28,15 +29,16 @@ const GetTicket = () => {
             const lastNumber = await TicketAPI.getLastNumber();
             setLastNumber(lastNumber);
         };
-
+        
         const fetchTimeId = async () => {
             const timeId = await TimeAPI.getTodayTimeId();
             setTimeId(timeId);
         };
-
+        
         fetchServices();
         fetchLastNumber();
         fetchTimeId();
+        
     }, []);
 
     const handleClickNumber = async () => {
@@ -45,13 +47,15 @@ const GetTicket = () => {
             return;
         } else {
             try {
+                await callCustomer.updateServiceNumberInQueue(selectedService.serviceId, +1)
+                const numberInQueue = selectedService.numberInQueue
                 const counterNumbers = await CounterServicesAPI.getNumberOfCountersForService(selectedService.serviceId);
                 let sum = 0;
                 for (let counter of counterNumbers) {
                     const numberServed = await CounterServicesAPI.getNumberOfServicesForCounter(counter);
                     sum += (1 / numberServed);
                 }
-                const estimatedTime = selectedService.serviceTime * ((selectedService.numberInQueue / sum) + 0.5);
+                const estimatedTime = selectedService.serviceTime * ((numberInQueue / sum) + 0.5);
                 setWaitingTime(estimatedTime);
 
                 const newNumber = await TicketAPI.createTicket(lastNumber, estimatedTime, selectedService.serviceId, timeId);
@@ -63,6 +67,8 @@ const GetTicket = () => {
         }
     };
 
+    
+    
     // functioin to convert minutes in hours and minutes
     const formatWaitingTime = (minutes) => {
         const hours = Math.floor(minutes / 60);
