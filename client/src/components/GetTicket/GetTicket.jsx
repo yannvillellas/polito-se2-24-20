@@ -47,7 +47,7 @@ const GetTicket = () => {
             return;
         } else {
             try {
-                await callCustomer.updateServiceNumberInQueue(selectedService.serviceId)
+                await callCustomer.updateServiceNumberInQueue(selectedService.serviceId, +1)
                 const numberInQueue = selectedService.numberInQueue
                 const counterNumbers = await CounterServicesAPI.getNumberOfCountersForService(selectedService.serviceId);
                 let sum = 0;

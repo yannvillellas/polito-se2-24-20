@@ -136,12 +136,13 @@ app.post('/api/saveCallingTicket', async (req, res) => {
 
 app.put('/service/queue', async (req, res) => {
     const serviceId = req.body.serviceId;
-    if (!serviceId) {
+    const number = req.body.number;
+    if (!serviceId || !number) {
         return res.status(400).json({ error: 'serviceId is required' });
     }
 
     console.log("serviceI: ", serviceId)
-    const success =  await updateServiceNumberInQueue(serviceId);
+    const success =  await updateServiceNumberInQueue(serviceId, number);
 
     if (success) {
         return res.status(200).json({ message: 'Service number updated successfully' });

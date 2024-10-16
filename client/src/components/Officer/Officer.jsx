@@ -21,7 +21,7 @@ function Officer(){
             callCustomer.saveCallingTicket(nextCustomer, actualCounter);
             
             // aggiorno la coda in service:
-            await callCustomer.updateServiceNumberInQueue(nextCustomer.serviceId); // Non funziona
+            await callCustomer.updateServiceNumberInQueue(nextCustomer.serviceId, -1); // Non funziona
             
             setActualCustomerInfo(nextCustomer);
         } else {

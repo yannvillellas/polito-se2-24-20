@@ -51,14 +51,14 @@ const saveCallingTicket = async (nextTicket, actualCounter) => {
 
 
 // HTTP PUT per updateServiceNumberInQueue
-const updateServiceNumberInQueue = async (serviceId) => {
+const updateServiceNumberInQueue = async (serviceId, number) => {
 
     if(!serviceId) return null;
 
     const response = await fetch(`${SERVER_URL}/service/queue`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify({serviceId: serviceId}),
+        body: JSON.stringify({serviceId: serviceId, number: number}),
       });
     
       if(!response.ok) {
