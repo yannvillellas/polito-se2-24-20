@@ -8,7 +8,6 @@ import callCustomer from "../../API/callCustomer.mjs";
 function CallCustomer(props) {
 
 // La lista dei ticket da chiamare e i rispettivi #Currier arrivano dalla "story 2".
-    console.log("Sono in CallCustomer, ecco i servingTickets",props.servingTickets);
 
 
     const [services, setServices] = useState([]);
@@ -29,7 +28,6 @@ function CallCustomer(props) {
         const interval = setInterval(async () => {
             
             const customers = await callCustomer.getAllCustomers();
-            console.log("sono in CallCustomer, ecco i customers", customers);
             setCustomers(customers);
 
             }, 5000); // Poll ogni 5 secondi
