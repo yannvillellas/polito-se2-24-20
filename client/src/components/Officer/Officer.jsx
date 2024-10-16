@@ -18,7 +18,6 @@ function Officer(){
         const nextCustomer = await nextCustomerAPI.getNextCustomer(actualCounter);
 
         if (nextCustomer) {
-            console.log("Sono in Officer, handleClick, ecco il nextCustomer", nextCustomer);
             callCustomer.saveCallingTicket(nextCustomer, actualCounter);
             
             // aggiorno la coda in service:

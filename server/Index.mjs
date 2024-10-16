@@ -47,10 +47,8 @@ app.post('/api/DoneTicket', async (req, res) => {
             return res.status(400).json({ error: "missing parameters" }).end();
         }
 
-        console.log("sono in index, doneTicket, ecco i dati che mi sono arrivati: ", ticketNumber, counter);
         const ticketInfo = await getTicketInfo(ticketNumber);
 
-        console.log("sono in index, doneTicket, ecco i dati che mi ha ritornato getTicketInfo:", ticketInfo);
 
         if(!ticketInfo) {
             return res.status(404).json({ error: "ticket not found" }).end();
@@ -123,13 +121,10 @@ app.post('/api/saveCallingTicket', async (req, res) => {
         }
 
         const serviceId = req.body.serviceId;
-        console.log("sono in index, saveCallingTicket, ecco il serviceId", serviceId);
         const serviceName = await getServiceById(serviceId);
-        console.log("sono in index, saveCallingTicket, ecco il serviceName:", serviceName);
         const ticketNumber = req.body.number;
         const actualCounter = req.body.actualCounter;
 
-        console.log("sono in saveCallingTicket, ecco i dati che sto per inserire in CallingTicekt:", serviceId, serviceName, ticketNumber, actualCounter);
 
         await insertCallingTicket(serviceName, ticketNumber, actualCounter);
         res.status(201).end();
@@ -141,7 +136,6 @@ app.post('/api/saveCallingTicket', async (req, res) => {
 
 app.put('/service/queue', async (req, res) => {
     const serviceId = req.body.serviceId;
-    console.log("sono in index, updateServiceNumberInQueue, ecco il serviceId", serviceId);
     if (!serviceId) {
         return res.status(400).json({ error: 'serviceId is required' });
     }

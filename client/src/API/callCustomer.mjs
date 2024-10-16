@@ -17,7 +17,6 @@ const getAllCustomers = async (counterN) => {
     // Controlla se la risposta è OK
     if (response.ok) {
         const allTickets = await response.json(); // Ottieni i dati in formato JSON
-        console.log("sono in nextCustomerAPI, ecco i dati del nextCustomer che mi ha ritornato il server!", allTickets);
         return allTickets; // Restituisci i dati
     } else {
         throw new Error('Error to retrieve statistics from the server'); // Gestisci gli errori
@@ -26,7 +25,6 @@ const getAllCustomers = async (counterN) => {
 
 // HTTP POST per getAllCustomers
 const saveCallingTicket = async (nextTicket, actualCounter) => {
-    console.log("sono in nextCustomerAPI, saveCalingTicket, sto mandando", nextTicket);
 
     if(!nextTicket || !actualCounter) return null;
 
@@ -54,7 +52,6 @@ const saveCallingTicket = async (nextTicket, actualCounter) => {
 
 // HTTP PUT per updateServiceNumberInQueue
 const updateServiceNumberInQueue = async (serviceId) => {
-    console.log("Invio richiesta per aggiornare il numero di clienti in coda per quel servizio:", serviceId);
 
     if(!serviceId) return null;
 

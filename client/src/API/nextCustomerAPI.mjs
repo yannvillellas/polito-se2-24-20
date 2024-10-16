@@ -5,8 +5,6 @@ const SERVER_URL = 'http://localhost:3001'
 const saveDoneTicket = async (actualCustomerInfo, actualCounter) => {
     if(!actualCustomerInfo || !actualCounter) return null;
 
-    console.log("sono in nextCustomerAPI, saveDoneTicket, sto mandando:", actualCustomerInfo, actualCounter);
-
     // Crea l'URL con il parametro actualTicket
     const url = new URL(`${SERVER_URL}/api/DoneTicket`);
 
@@ -32,8 +30,6 @@ const saveDoneTicket = async (actualCustomerInfo, actualCounter) => {
 const getNextCustomer = async (counterN) => {
 
     if(!counterN) return null;
-
-    console.log("sono in nextCustomerAPI, getNextCustomer, ecco il counterN", counterN);
 
     // Crea l'URL con il parametro counterN
     const url = new URL(`${SERVER_URL}/api/NextCustomer`);
