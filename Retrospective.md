@@ -83,7 +83,7 @@ sections:
 - Unit Testing:
   - Total hours estimated : 3d
   - Total hours spent : 3d 3h 50m
-  - Nr of automated unit test cases : 81
+  - Nr of automated unit test cases : 90
   - Coverage (if available) : white box coverage 
   <br></br>
   ![Alt text](./immagini/testCoverage.png)
