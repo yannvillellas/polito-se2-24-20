@@ -81,8 +81,8 @@ sections:
 ## QUALITY MEASURES 
 
 - Unit Testing:
-  - Total hours estimated : 23 h
-  - Total hours spent : 28.31h
+  - Total hours estimated : 3d
+  - Total hours spent : 3d 3h 50m
   - Nr of automated unit test cases : 81
   - Coverage (if available) : white box coverage 
   <br></br>
