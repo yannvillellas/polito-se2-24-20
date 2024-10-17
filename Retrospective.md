@@ -54,7 +54,7 @@ sections:
     The standard deviation has been evaluated with: 
 
   $$\sigma = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2}$$
-where:
+  > where:
 * $\sigma$: standard deviation
 * $x_i$: i-th hour estimated/actual
 * $\mu$: hours per task average estimated/actual
@@ -71,12 +71,12 @@ where:
 - Total estimation error ratio: sum of total hours spent / sum of total hours effort - 1
 
   $$\frac{\sum_i spent_{task_i}}{\sum_i estimation_{task_i}} - 1$$ 
-      Result: -0.0885
+  > Result: -0.0885
     
 - Absolute relative task estimation error: sum( abs( spent-task-i / estimation-task-i - 1))/n
 
   $$\frac{1}{n}\sum_i^n \left| \frac{spent_{task_i}}{estimation_task_i}-1 \right| $$
-      Result: 0.4057
+  > Result: 0.4057
   
 ## QUALITY MEASURES 
 
